@@ -4,7 +4,7 @@ if(isset($_POST['signin'])){
     if($_POST['email'] != NULL && $_POST['pass'] != NULL){
         $email = $_POST['email'];
         $pass = $_POST['pass'];
-        $check_user = "select * from user_details where email = '$email' and password = '$pass'";
+        $check_user = "SELECT * FROM user_details where email = '$email' and password = '$pass'";
         $result = $conn->query($check_user);
         if($result->num_rows > 0){
             while($row = $result->fetch_assoc()){

@@ -5,13 +5,13 @@
                 <div class="col-lg-3">
                     <div class="footer-left">
                         <div class="footer-logo">
-                            <a href="#"><img src="img/WhatsApp Image 2024-05-31 at 17.55.44.jpeg  " alt="" style="width:50px; height
+                            <a href="#"><img src="img/logooo.png " alt="" style="width:200px; height
                                 :50px;"></a>
                         </div>
                         <ul>
-                            <li>Address: Jl. Krodan No.7, Krodan, Maguwoharjo, Kec. Depok, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55281</li>
-                            <li>Phone: 0819-1158-4099</li>
-                            <li>Email: zoepy@gmail.com</li>
+                            <li>Address: Jl kanigoro no 232 krodan, maguwoharjo, depok sleman, jogja 55282, Sleman 55282</li>
+                            <li>Phone: +6281375471934</li>
+                            <li>Email: sidarentcar@gmail.com</li>
                         </ul>
                         <div class="footer-social">
                             <a href="https://www.facebook.com/TheRVCJMedia/"><i class="fa fa-facebook"></i></a>

@@ -57,7 +57,7 @@ $result = $conn->query($fetch_product);
                         <?php
                         while($row = $result->fetch_assoc()){
                             ?>
-                            <div class="col-lg-4 col-sm-6">
+                            <div class="col-lg-4 col-sm-6">]
                                 <div class="product-item">
                                     <div class="pi-pic">
                                         <!-- Tambahkan path ke gambar menggunakan fungsi htmlspecialchars() untuk mencegah XSS -->

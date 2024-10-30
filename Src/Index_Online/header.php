@@ -91,12 +91,12 @@ if(!isset($_SESSION['uid']) || $_SESSION['uid'] == NULL){
             </div>
         </div>
         <div class="container">
-            <div class="inner-header">
+        <div class="inner-header">
                 <div class="row">
                     <div class="col-lg-2 col-md-2">
                         <div class="logo">
                             <a href="./index.php">
-                                <img src="img/WhatsApp Image 2024-05-31 at 17.55.44.jpeg" alt="" style="width:100px; height:100px;">
+                                <img src="img/logooo.png" alt="" style="width:1000px; height:50px;">
                             </a>
                         </div>
                     </div>

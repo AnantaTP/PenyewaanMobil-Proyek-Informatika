@@ -21,7 +21,7 @@
         <div class="container">
             <div class="map-inner">
                 <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15813.21865487581!2d110.4228276!3d-7.7574771!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a59766a84daa7%3A0x8940d7441ba5e2ad!2sZoepy%20petshop%20krodan!5e0!3m2!1sid!2sid!4v1717127695562!5m2!1sid!2sid"
+                    src="https://www.google.com/maps/place/Sidadolog+RentCar/@-7.7550516,110.4241275,17z/data=!3m1!4b1!4m6!3m5!1s0x2e7a594c21734911:0x3112e0b9f484d57b!8m2!3d-7.7550569!4d110.4267024!16s%2Fg%2F11nrw195n_?entry=ttu&g_ep=EgoyMDI0MTAyMy4wIKXMDSoASAFQAw%3D%3D"
                     height="610" style="border:0" allowfullscreen="">
                 </iframe>
                 <div class="icon">
@@ -47,7 +47,7 @@
                             </div>
                             <div class="ci-text">
                                 <span>Alamat :</span>
-                                <p>Jl. Krodan No.7, Krodan, Maguwoharjo, Kec. Depok, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55281</p>
+                                <p>Jl kanigoro no 232 krodan, maguwoharjo, depok sleman, jogja 55282, Sleman 55282</p>
                             </div>
                         </div>
                         <div class="cw-item">
@@ -56,7 +56,7 @@
                             </div>
                             <div class="ci-text">
                                 <span>Nomor:</span>
-                                <p>0819-1158-4099</p>
+                                <p>+6281375471934</p>
                             </div>
                         </div>
                         <div class="cw-item">
@@ -65,7 +65,7 @@
                             </div>
                             <div class="ci-text">
                                 <span>Email:</span>
-                                <p>Zoepy@gmail.com</p>
+                                <p>sidarentcar@gmail.com</p>
                             </div>
                         </div>
                     </div>
