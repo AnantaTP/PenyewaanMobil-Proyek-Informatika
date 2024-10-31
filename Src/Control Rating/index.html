@@ -1,0 +1,55 @@
+<!-- view/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Petshop Rating</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+    <div class="container mt-5 text-center">
+        <h1 class="mb-4">Rate Our Petshop</h1>
+        <div class="rating-section">
+            <button class="btn btn-warning rate-btn" data-rating="1">1</button>
+            <button class="btn btn-warning rate-btn" data-rating="2">2</button>
+            <button class="btn btn-warning rate-btn" data-rating="3">3</button>
+            <button class="btn btn-warning rate-btn" data-rating="4">4</button>
+            <button class="btn btn-warning rate-btn" data-rating="5">5</button>
+        </div>
+        <div class="average-rating mt-4">
+            <h2>Average Rating: <span id="average-rating">No ratings yet</span></h2>
+        </div>
+    </div>
+
+    <script type="module">
+        import RatingController from '../controller/RatingController.js';
+
+        class RatingView {
+            constructor() {
+                this.ratingButtons = document.querySelectorAll('.rate-btn');
+                this.averageRatingDisplay = document.getElementById('average-rating');
+            }
+
+            bindAddRating(handler) {
+                this.ratingButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const rating = parseInt(button.getAttribute('data-rating'));
+                        handler(rating);
+                    });
+                });
+            }
+
+            updateAverageRating(averageRating) {
+                this.averageRatingDisplay.textContent = averageRating;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const view = new RatingView();
+            new RatingController(view);
+        });
+    </script>
+</body>
+</html>
