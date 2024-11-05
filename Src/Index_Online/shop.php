@@ -46,8 +46,8 @@ $result = $conn->query($fetch_product);
                 <div class="filter-widget">
                     <h4 class="fw-title">Kategori</h4>
                     <ul class="filter-catagories">
-                        <li><a href="shop.php?cat=0">Produk</a></li>
-                        <li><a href="shop.php?cat=1">Aksesoris</a></li>
+                        <li><a href="shop.php?cat=0">LCGC</a></li>
+                        <li><a href="shop.php?cat=1">MPV</a></li>
                     </ul>
                 </div>
             </div>
@@ -57,7 +57,7 @@ $result = $conn->query($fetch_product);
                         <?php
                         while($row = $result->fetch_assoc()){
                             ?>
-                            <div class="col-lg-4 col-sm-6">]
+                            <div class="col-lg-4 col-sm-6">
                                 <div class="product-item">
                                     <div class="pi-pic">
                                         <!-- Tambahkan path ke gambar menggunakan fungsi htmlspecialchars() untuk mencegah XSS -->

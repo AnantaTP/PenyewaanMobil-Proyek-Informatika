@@ -33,7 +33,7 @@ if (isset($_POST['placeorder'])) {
         $foto_ktp = $target_dir . basename($_FILES['foto_ktp']['name']);
         if (move_uploaded_file($_FILES['foto_ktp']['tmp_name'], $foto_ktp)) {
             // Menghitung total bayar berdasarkan lama sewa
-            $total_bayar = $total * $lama_sewa;
+            $total_belanja = $total * $lama_sewa;
 
             // Update atau masukkan data ke tabel orders
             $place_order_query = "UPDATE orders SET 
@@ -42,7 +42,7 @@ if (isset($_POST['placeorder'])) {
                 date = '$datetime', 
                 lama_sewa = '$lama_sewa', 
                 tanggal_kembali = '$tanggal_kembali', 
-                total_bayar = '$total_bayar', 
+                total_bayar = '$total_belanja', 
                 foto_ktp = '$foto_ktp' 
                 WHERE user_id = '$uid' AND status IS NULL";
 

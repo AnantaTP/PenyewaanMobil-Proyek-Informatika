@@ -42,7 +42,7 @@ if(!isset($_SESSION['admin']) || $_SESSION['admin'] == NULL){
         <div class="sidebar-brand-icon rotate-n-15">
           <i class="fas fa-laugh-wink"></i>
         </div>
-        <div class="sidebar-brand-text mx-3">Zoepy</div>
+        <div class="sidebar-brand-text mx-3">Sida CAR</div>
       </a>
 
       <!-- Divider -->
@@ -134,12 +134,12 @@ if(!isset($_SESSION['admin']) || $_SESSION['admin'] == NULL){
       <li class="nav-item">
         <a class="nav-link" href="tables.php">
           <i class="fas fa-fw fa-table"></i>
-          <span>Produk</span></a>
+          <span>LCGC</span></a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="accessories.php">
           <i class="fas fa-fw fa-table"></i>
-          <span></span>Aksesoris</a>
+          <span></span>MPV</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="users.php">
