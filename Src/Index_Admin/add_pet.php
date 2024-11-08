@@ -133,7 +133,7 @@ if(isset($_REQUEST['deleteid']) && $_REQUEST['deleteid'] != NULL) {
             ?>
           <form method='post' enctype="multipart/form-data">
           <div class="form-group">
-                <label for="name">Nama:</label>
+                <label for="name">Nama Mobil:</label>
                 <input type="text" class="form-control" id="pet_name" name="pet_name" value="<?php echo $pet_name; ?>">
             </div>
             <div class="form-group">

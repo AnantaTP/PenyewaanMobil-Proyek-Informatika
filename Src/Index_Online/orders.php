@@ -81,15 +81,15 @@ while($row = $total_amount->fetch_assoc()){
                                         if($status == NULL){
                                             echo "In the cart";
                                         }elseif($status == 0){
-                                            echo "Placed";
+                                            echo "Sudah Bayar";
                                         }elseif($status == 1){
-                                            echo "Accepted";
+                                            echo "Mobil Diambil";
                                         }elseif($status == 2){
-                                            echo "Dispatched";
+                                            echo "Mobil Dikembalikan";
                                         }elseif($status == 3){
-                                            echo "Cancelled";
+                                            echo "Dibatalkan";
                                         }elseif($status == 4){
-                                            echo "Received";
+                                            echo "Ditinjau";
                                         } 
                                         ?></td>
                                         <?php

@@ -108,85 +108,85 @@ if(isset($_REQUEST['orderdelete'])){
                         <form method="post">
                           <select name="order_status_<?php echo $row['id']; ?>" id="order_status_<?php echo $row['id']; ?>" onchange="updatestatus(this, '<?php echo $row['id']; ?>')" class="form-control">
                           <option>select</option>
-                          <option value="0">Placed</option>
-                          <option value="1">Accepted</option>
-                          <option value="2">Dispatched</option>
-                          <option value="3">Cancelled</option>
-                          <option value="4">Received</option>
+                          <option value="0">Sudah Bayar</option>
+                          <option value="1">Mobil Diambil</option>
+                          <option value="2">Mobil Dikembalikan</option>
+                          <option value="3">Dibatalkan</option>
+                          <option value="4">Ditinjau</option>
                           </select>
                         </form>
                         <?php
                       }elseif($status == 0){
-                        echo "Placed";
+                        echo "Sudah Bayar";
                         ?>
                         <form method="post">
                           <select name="order_status_<?php echo $row['id']; ?>" id="order_status_<?php echo $row['id']; ?>" onchange="updatestatus(this, '<?php echo $row['id']; ?>')" class="form-control">
                           <option>select</option>
-                          <option value="0">Placed</option>
-                          <option value="1">Accepted</option>
-                          <option value="2">Dispatched</option>
-                          <option value="3">Cancelled</option>
-                          <option value="4">Received</option>
+                          <option value="0">Sudah Bayar</option>
+                          <option value="1">Mobil Diambil</option>
+                          <option value="2">Mobil Dikembalikan</option>
+                          <option value="3">Dibatalkan</option>
+                          <option value="4">Ditinjau</option>
                           </select>
                         </form>
                         <?php
                       }
                       elseif($status == 1){
-                        echo "Accepted";
+                        echo "Mobil Diambil";
                         ?>
                         <form method="post">
                           <select name="order_status_<?php echo $row['id']; ?>" id="order_status_<?php echo $row['id']; ?>" onchange="updatestatus(this, '<?php echo $row['id']; ?>')" class="form-control">
                           <option>select</option>
-                          <option value="0">Placed</option>
-                          <option value="1">Accepted</option>
-                          <option value="2">Dispatched</option>
-                          <option value="3">Cancelled</option>
-                          <option value="4">Received</option>
+                          <option value="0">Sudah Bayar</option>
+                          <option value="1">Mobil Diambil</option>
+                          <option value="2">Mobil Dikembalikan</option>
+                          <option value="3">Dibatalkan</option>
+                          <option value="4">Ditinjau</option>
                           </select>
                         </form>
                         <?php
                       }
                       elseif($status == 2){
-                        echo "Dispatched";
+                        echo "Mobil Dikembalikan";
                         ?>
                         <form method="post">
                           <select name="order_status_<?php echo $row['id']; ?>" id="order_status_<?php echo $row['id']; ?>" onchange="updatestatus(this, '<?php echo $row['id']; ?>')" class="form-control">
                           <option>select</option>
-                          <option value="0">Placed</option>
-                          <option value="1">Accepted</option>
-                          <option value="2">Dispatched</option>
-                          <option value="3">Cancelled</option>
-                          <option value="4">Received</option>
+                          <option value="0">Sudah Bayar</option>
+                          <option value="1">Mobil Diambil</option>
+                          <option value="2">Mobil Dikembalikan</option>
+                          <option value="3">Dibatalkan</option>
+                          <option value="4">Ditinjau</option>
                           </select>
                         </form>
                         <?php
                       }
                       elseif($status == 3){
-                        echo "Cancelled";
+                        echo "Dibatalkan";
                         ?>
                         <form method="post">
                           <select name="order_status_<?php echo $row['id']; ?>" id="order_status_<?php echo $row['id']; ?>" onchange="updatestatus(this, '<?php echo $row['id']; ?>')" class="form-control">
                           <option>select</option>
-                          <option value="0">Placed</option>
-                          <option value="1">Accepted</option>
-                          <option value="2">Dispatched</option>
-                          <option value="3">Cancelled</option>
-                          <option value="4">Received</option>
+                          <option value="0">Sudah Bayar</option>
+                          <option value="1">Mobil Diambil</option>
+                          <option value="2">Mobil Dikembalikan</option>
+                          <option value="3">Dibatalkan</option>
+                          <option value="4">Ditinjau</option>
                           </select>
                         </form>
                         <?php
                       }
                       elseif($status == 4){
-                        echo "Received";
+                        echo "Ditinjau";
                         ?>
                         <form method="post">
                           <select name="order_status_<?php echo $row['id']; ?>" id="order_status_<?php echo $row['id']; ?>" onchange="updatestatus(this, '<?php echo $row['id']; ?>')" class="form-control">
                           <option>select</option>
-                          <option value="0">Placed</option>
-                          <option value="1">Accepted</option>
-                          <option value="2">Dispatched</option>
-                          <option value="3">Cancelled</option>
-                          <option value="4">Received</option>
+                          <option value="0">Sudah Bayar</option>
+                          <option value="1">Mobil Diambil</option>
+                          <option value="2">Mobil Dikembalikan</option>
+                          <option value="3">Dibatalkan</option>
+                          <option value="4">Ditinjau</option>
                           </select>
                         </form>
                         <?php
