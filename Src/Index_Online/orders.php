@@ -107,7 +107,7 @@ while($row = $total_amount->fetch_assoc()){
                                     }elseif($status == 3){
                                         echo "Dibatalkan";
                                     }elseif($status == 4){
-                                        echo "Ditinjau";
+                                        echo "Selesai";
                                     } 
                                     ?></td>
                                     <td>

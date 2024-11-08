@@ -112,7 +112,7 @@ if(isset($_REQUEST['orderdelete'])){
                           <option value="1">Mobil Diambil</option>
                           <option value="2">Mobil Dikembalikan</option>
                           <option value="3">Dibatalkan</option>
-                          <option value="4">Ditinjau</option>
+                          <option value="4">Selesai</option>
                           </select>
                         </form>
                         <?php
@@ -126,7 +126,7 @@ if(isset($_REQUEST['orderdelete'])){
                           <option value="1">Mobil Diambil</option>
                           <option value="2">Mobil Dikembalikan</option>
                           <option value="3">Dibatalkan</option>
-                          <option value="4">Ditinjau</option>
+                          <option value="4">Selesai</option>
                           </select>
                         </form>
                         <?php
@@ -141,7 +141,7 @@ if(isset($_REQUEST['orderdelete'])){
                           <option value="1">Mobil Diambil</option>
                           <option value="2">Mobil Dikembalikan</option>
                           <option value="3">Dibatalkan</option>
-                          <option value="4">Ditinjau</option>
+                          <option value="4">Selesai</option>
                           </select>
                         </form>
                         <?php
@@ -156,7 +156,7 @@ if(isset($_REQUEST['orderdelete'])){
                           <option value="1">Mobil Diambil</option>
                           <option value="2">Mobil Dikembalikan</option>
                           <option value="3">Dibatalkan</option>
-                          <option value="4">Ditinjau</option>
+                          <option value="4">Selesai</option>
                           </select>
                         </form>
                         <?php
@@ -171,13 +171,13 @@ if(isset($_REQUEST['orderdelete'])){
                           <option value="1">Mobil Diambil</option>
                           <option value="2">Mobil Dikembalikan</option>
                           <option value="3">Dibatalkan</option>
-                          <option value="4">Ditinjau</option>
+                          <option value="4">Selesai</option>
                           </select>
                         </form>
                         <?php
                       }
                       elseif($status == 4){
-                        echo "Ditinjau";
+                        echo "Selesai";
                         ?>
                         <form method="post">
                           <select name="order_status_<?php echo $row['id']; ?>" id="order_status_<?php echo $row['id']; ?>" onchange="updatestatus(this, '<?php echo $row['id']; ?>')" class="form-control">
@@ -186,7 +186,7 @@ if(isset($_REQUEST['orderdelete'])){
                           <option value="1">Mobil Diambil</option>
                           <option value="2">Mobil Dikembalikan</option>
                           <option value="3">Dibatalkan</option>
-                          <option value="4">Ditinjau</option>
+                          <option value="4">Selesai</option>
                           </select>
                         </form>
                         <?php
