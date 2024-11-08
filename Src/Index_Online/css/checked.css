@@ -1,0 +1,11 @@
+.fa-star {
+    color: gray;
+    cursor: pointer;
+}
+.fa-star.checked {
+    color: gold;
+}
+.rating-btn {
+    margin-top: 20px; /* Memberikan jarak ke atas */
+    padding: 8px 16px; /* Padding untuk memperbaiki ukuran tombol */
+}

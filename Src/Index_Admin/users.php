@@ -23,7 +23,7 @@ $result = $conn->query($fetch_data);
                   <thead>
                     <tr>
                       <th>Nama</th>
-                      <th>Gamabr</th>
+                      <th>Gambar</th>
                       <th>Email</th>
                       <th>Nomor</th>
                       <th>Alamat</th>
