@@ -38,8 +38,8 @@ while($row = $total_amount->fetch_assoc()){
         });
     }
 
-    function openRatingModal(orderId) {
-        $('#ratingOrderId').val(orderId); // set order ID in hidden input
+    function openRatingModal(product_id) {
+        $('#ratingOrderId').val(product_id); // set order ID in hidden input
         $('#ratingModal').modal('show'); // show modal
     }
 
@@ -152,30 +152,42 @@ while($row = $total_amount->fetch_assoc()){
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="submit_rating.php" method="post">
-                <div class="modal-body text-center">
-                    <input type="hidden" name="order_id" id="ratingOrderId">
-                    <input type="hidden" name="rating" id="ratingInput">
-                    <label for="rating">Select Rating:</label>
-                    <div>
-                        <!-- Star icons for rating -->
-                        <i class="fa fa-star fa-2x" onclick="setRating(1)"></i>
-                        <i class="fa fa-star fa-2x" onclick="setRating(2)"></i>
-                        <i class="fa fa-star fa-2x" onclick="setRating(3)"></i>
-                        <i class="fa fa-star fa-2x" onclick="setRating(4)"></i>
-                        <i class="fa fa-star fa-2x" onclick="setRating(5)"></i>
-                    </div>
-                    <div>
-                        <!-- Add a textarea for the review input -->
-                        <label for="review">Write Your Review:</label>
-                        <textarea name="review" id="review" rows="4" class="form-control" placeholder="Enter your review here..."></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Submit Rating</button>
-                </div>
-            </form>
+            
+            <form action="controlRating.php" method="post">
+    <div class="modal-body text-center">
+        <input type="hidden" name="rating_value" id="ratingInput"> <!-- Hidden input to store rating -->
+        <label for="rating">Select Rating:</label>
+        <div>
+            <!-- Star icons for rating -->
+            <i class="fa fa-star fa-2x" onclick="setRating(1)"></i>
+            <i class="fa fa-star fa-2x" onclick="setRating(2)"></i>
+            <i class="fa fa-star fa-2x" onclick="setRating(3)"></i>
+            <i class="fa fa-star fa-2x" onclick="setRating(4)"></i>
+            <i class="fa fa-star fa-2x" onclick="setRating(5)"></i>
+        </div>
+        <div>
+            <!-- Add a textarea for the review input -->
+            <label for="review">Write Your Review:</label>
+            <textarea name="review" id="review" rows="4" class="form-control" placeholder="Enter your review here..."></textarea>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary">Submit Rating</button>
+    </div>
+</form>
+
+<script>
+    function setRating(star) {
+        document.getElementById('ratingInput').value = star; // Set the integer value to hidden input
+        // Update the star icons' appearance
+        const stars = document.querySelectorAll('.fa-star');
+        stars.forEach((s, index) => {
+            s.classList.toggle('checked', index < star); // Highlight stars up to the selected rating
+        });
+    }
+</script>
+    
         </div>
     </div>
 </div>
