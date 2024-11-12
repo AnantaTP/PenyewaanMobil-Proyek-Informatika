@@ -92,7 +92,7 @@ while($row = $total_amount->fetch_assoc()){
                                 <td class="first-row">
                                     <h5><?php echo $row['product_name'] ?></h5>
                                 </td>
-                                <td class="p-price first-row"><?php echo $row['product_price'] ?></td>
+                                <td class="p-price first-row"><?php echo $row['total_bayar'] ?></td>
                                 <td class="p-price first-row">
                                     <?php 
                                     $status = $row['status'];

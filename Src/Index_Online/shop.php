@@ -69,9 +69,10 @@ $result = $conn->query($fetch_product);
                                         </ul>
                                     </div>
                                     <div class="pi-text">
-                                        <div class="catagory-name"><?php echo ($category==0?'Produk':'Aksesoris') ?></div>
+                                        <div class="catagory-name"><?php echo ($category==0?'LCGC':'') ?></div>
                                         <a href="#"><h5><?php echo $row['product_name'] ?></h5></a>
-                                        <div class="product-price"><?php echo $row['product_price'] ?></div>
+                                        <div class="product-price">Rp <?php echo $row['product_price']; ?>/hari</div>
+
                                     </div>
                                 </div>
                             </div>
