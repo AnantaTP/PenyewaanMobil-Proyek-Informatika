@@ -1,8 +1,8 @@
-<?php include 'header.php'; 
-if(!isset($_SESSION['uid']) || $_SESSION['uid'] == NULL){
+<?php include 'header.php';
+if (!isset($_SESSION['uid']) || $_SESSION['uid'] == NULL) {
     ?>
     <script>
-    window.location = "login.php";
+        window.location = "login.php";
     </script>
     <?php
     exit;
@@ -14,7 +14,7 @@ $orders = $conn->query($fetch_orders);
 $total_amount_query = "SELECT sum(p.product_price) as total FROM products p inner join orders o on o.product_id = p.id WHERE user_id = '$uid' and status IS NOT NULL";
 $total_amount = $conn->query($total_amount_query);
 $total = 50;
-while($row = $total_amount->fetch_assoc()){
+while ($row = $total_amount->fetch_assoc()) {
     $total = $row['total'];
 }
 ?>
@@ -25,14 +25,14 @@ while($row = $total_amount->fetch_assoc()){
 </head>
 
 <script>
-    function removefromcart(oid){
+    function removefromcart(oid) {
         $.post("addtocart.php", {
-            cancelorder:1,
-            oid:oid
-        }, function(data, status){
-            if(data == 1){
+            cancelorder: 1,
+            oid: oid
+        }, function (data, status) {
+            if (data == 1) {
                 window.location = "orders.php";
-            }else{
+            } else {
                 alert(data);
             }
         });
@@ -45,7 +45,7 @@ while($row = $total_amount->fetch_assoc()){
 
     function setRating(star) {
         $('#ratingInput').val(star); // set hidden input with rating value
-        $('.fa-star').each(function(i) {
+        $('.fa-star').each(function (i) {
             $(this).toggleClass('checked', i < star);
         });
     }
@@ -84,49 +84,53 @@ while($row = $total_amount->fetch_assoc()){
                             </tr>
                         </thead>
                         <tbody>
-                        <?php
-                        while($row = $orders->fetch_assoc()){
-                            ?>
-                            <tr>
-                                <td class="cart-pic first-row"><img src="<?php echo 'admin/'.$row['image'] ?>" alt=""></td>
-                                <td class="first-row">
-                                    <h5><?php echo $row['product_name'] ?></h5>
-                                </td>
-                                <td class="p-price first-row"><?php echo $row['total_bayar'] ?></td>
-                                <td class="p-price first-row">
-                                    <?php 
-                                    $status = $row['status'];
-                                    if($status == NULL){
-                                        echo "In the cart";
-                                    }elseif($status == 0){
-                                        echo "Sudah Bayar";
-                                    }elseif($status == 1){
-                                        echo "Mobil Diambil";
-                                    }elseif($status == 2){
-                                        echo "Mobil Dikembalikan";
-                                    }elseif($status == 3){
-                                        echo "Dibatalkan";
-                                    }elseif($status == 4){
-                                        echo "Selesai";
-                                    } 
-                                    ?></td>
-                                    <td>
-                                    <?php
-                                    if($status == 4){
-                                        ?>
-                                        <!-- Button to open the rating modal -->
-                                        <button class="btn btn-warning text-white rating-btn" onclick="openRatingModal('<?php echo $row['orderid'];?>')">Give Rating</button>
-                                        <?php
-                                    } else {
-                                        echo "-";
-                                    }
-                                    ?>
+                            <?php
+                            while ($row = $orders->fetch_assoc()) {
+                                ?>
+                                <tr>
+                                    <td class="cart-pic first-row"><img src="<?php echo 'admin/' . $row['image'] ?>" alt="">
                                     </td>
-                                <td class="close-td first-row"><i class="ti-close" onclick="removefromcart('<?php echo $row['orderid'];?>');"></i></td>
-                            </tr>
-                        <?php
-                        }
-                        ?>
+                                    <td class="first-row">
+                                        <h5><?php echo $row['product_name'] ?></h5>
+                                    </td>
+                                    <td class="p-price first-row"><?php echo $row['total_bayar'] ?></td>
+                                    <td class="p-price first-row">
+                                        <?php
+                                        $status = $row['status'];
+                                        if ($status == NULL) {
+                                            echo "In the cart";
+                                        } elseif ($status == 0) {
+                                            echo "Sudah Bayar";
+                                        } elseif ($status == 1) {
+                                            echo "Mobil Diambil";
+                                        } elseif ($status == 2) {
+                                            echo "Mobil Dikembalikan";
+                                        } elseif ($status == 3) {
+                                            echo "Dibatalkan";
+                                        } elseif ($status == 4) {
+                                            echo "Selesai";
+                                        }
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        if ($status == 4) {
+                                            ?>
+                                            <!-- Button to open the rating modal -->
+                                            <button class="btn btn-warning text-white rating-btn"
+                                                onclick="openRatingModal('<?php echo $row['orderid']; ?>')">Give Rating</button>
+                                            <?php
+                                        } else {
+                                            echo "-";
+                                        }
+                                        ?>
+                                    </td>
+                                    <td class="close-td first-row"><i class="ti-close"
+                                            onclick="removefromcart('<?php echo $row['orderid']; ?>');"></i></td>
+                                </tr>
+                                <?php
+                            }
+                            ?>
                         </tbody>
                     </table>
                 </div>
@@ -143,7 +147,8 @@ while($row = $total_amount->fetch_assoc()){
 </section>
 
 <!-- Rating Modal -->
-<div class="modal fade" id="ratingModal" tabindex="-1" role="dialog" aria-labelledby="ratingModalLabel" aria-hidden="true">
+<div class="modal fade" id="ratingModal" tabindex="-1" role="dialog" aria-labelledby="ratingModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -152,42 +157,43 @@ while($row = $total_amount->fetch_assoc()){
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            
-            <form action="controlRating.php" method="post">
-    <div class="modal-body text-center">
-        <input type="hidden" name="rating_value" id="ratingInput"> <!-- Hidden input to store rating -->
-        <label for="rating">Select Rating:</label>
-        <div>
-            <!-- Star icons for rating -->
-            <i class="fa fa-star fa-2x" onclick="setRating(1)"></i>
-            <i class="fa fa-star fa-2x" onclick="setRating(2)"></i>
-            <i class="fa fa-star fa-2x" onclick="setRating(3)"></i>
-            <i class="fa fa-star fa-2x" onclick="setRating(4)"></i>
-            <i class="fa fa-star fa-2x" onclick="setRating(5)"></i>
-        </div>
-        <div>
-            <!-- Add a textarea for the review input -->
-            <label for="review">Write Your Review:</label>
-            <textarea name="review" id="review" rows="4" class="form-control" placeholder="Enter your review here..."></textarea>
-        </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="submit" class="btn btn-primary">Submit Rating</button>
-    </div>
-</form>
 
-<script>
-    function setRating(star) {
-        document.getElementById('ratingInput').value = star; // Set the integer value to hidden input
-        // Update the star icons' appearance
-        const stars = document.querySelectorAll('.fa-star');
-        stars.forEach((s, index) => {
-            s.classList.toggle('checked', index < star); // Highlight stars up to the selected rating
-        });
-    }
-</script>
-    
+            <form action="controlRating.php" method="post">
+                <div class="modal-body text-center">
+                    <input type="hidden" name="rating_value" id="ratingInput"> <!-- Hidden input to store rating -->
+                    <label for="rating">Select Rating:</label>
+                    <div>
+                        <!-- Star icons for rating -->
+                        <i class="fa fa-star fa-2x" onclick="setRating(1)"></i>
+                        <i class="fa fa-star fa-2x" onclick="setRating(2)"></i>
+                        <i class="fa fa-star fa-2x" onclick="setRating(3)"></i>
+                        <i class="fa fa-star fa-2x" onclick="setRating(4)"></i>
+                        <i class="fa fa-star fa-2x" onclick="setRating(5)"></i>
+                    </div>
+                    <div>
+                        <!-- Add a textarea for the review input -->
+                        <label for="review">Write Your Review:</label>
+                        <textarea name="review" id="review" rows="4" class="form-control"
+                            placeholder="Enter your review here..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Submit Rating</button>
+                </div>
+            </form>
+
+            <script>
+                function setRating(star) {
+                    document.getElementById('ratingInput').value = star; // Set the integer value to hidden input
+                    // Update the star icons' appearance
+                    const stars = document.querySelectorAll('.fa-star');
+                    stars.forEach((s, index) => {
+                        s.classList.toggle('checked', index < star); // Highlight stars up to the selected rating
+                    });
+                }
+            </script>
+
         </div>
     </div>
 </div>
