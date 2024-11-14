@@ -48,7 +48,7 @@ if(isset($_POST['adminlogin'])){
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>SB Admin 2 - Login</title>
+  <title>Login - AutoHub</title>
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -57,9 +57,43 @@ if(isset($_POST['adminlogin'])){
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
+  <!-- Custom style overrides -->
+  <style>
+    body {
+      background-color: #d4edda; /* Light green background */
+    }
+    .bg-gradient-primary {
+      background: linear-gradient(180deg, #a8e6a3, #81c784); /* Gradient green */
+    }
+    .btn-primary {
+      background-color: #4CAF50; /* Custom green for login button */
+      border-color: #4CAF50;
+    }
+    .btn-primary:hover {
+      background-color: #45a049;
+      border-color: #45a049;
+    }
+    .text-gray-900 {
+      color: #2e7d32 !important; /* Darker green for text */
+    }
+    .card {
+      border-radius: 15px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .bg-login-image {
+      background-image: url('images/car-login-bg.jpg'); /* Add a relevant car background image */
+      background-size: cover;
+      background-position: center;
+    }
+    .form-control-user {
+      border-radius: 20px;
+      padding: 15px;
+    }
+  </style>
+
 </head>
 
-<body class="bg-gradient-primary">
+<body>
 
   <div class="container">
 
@@ -76,14 +110,14 @@ if(isset($_POST['adminlogin'])){
               <div class="col-lg-6">
                 <div class="p-5">
                   <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                    <h1 class="h4 text-gray-900 mb-4"><i class="fas fa-car"></i> Welcome Back to AutoHub!</h1>
                   </div>
                   <form class="user" method="post">
                     <div class="form-group">
-                      <input type="email" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address..." name="email">
+                      <input type="email" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address..." name="email" required>
                     </div>
                     <div class="form-group">
-                      <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password" name="pass">
+                      <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password" name="pass" required>
                     </div>
                     <button type="submit" name="adminlogin" class="btn btn-primary btn-user btn-block">
                       Login

@@ -38,6 +38,8 @@ if(!isset($_SESSION['uid']) || $_SESSION['uid'] == NULL){
     <link rel="stylesheet" href="css/jquery-ui.min.css" type="text/css">
     <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
+
+    
 </head>
 
 <body>
@@ -73,96 +75,93 @@ if(!isset($_SESSION['uid']) || $_SESSION['uid'] == NULL){
                     </div>
                 </div>
                 <div class="ht-right">
-                <?php
-                if(isset($_SESSION['contactno']) && $_SESSION['contactno'] != NULL){
+                    <?php
+                    if(isset($_SESSION['contactno']) && $_SESSION['contactno'] != NULL){
                     ?>
                     <img src="<?php echo $_SESSION['profilephoto']; ?>" style="width:50px; height:50px;" class="img-round">
                     <a href="logout.php" class="login-panel"><i class="fa fa-user"></i>Logout</a>
                     <?php
-                }else{
+                    }else{
                     ?>
                     <a href="login.php" class="login-panel"><i class="fa fa-user"></i>Login</a>
                     <?php  
-                }
-                ?>
-                    
-                   
+                    }
+                    ?>
                 </div>
             </div>
         </div>
+
         <div class="container">
         <div class="inner-header">
-                <div class="row">
-                    <div class="col-lg-2 col-md-2">
-                        <div class="logo">
-                            <a href="./index.php">
-                                <img src="img/logooo.png" alt="" style="width:1000px; height:50px;">
+            <div class="row">
+                <div class="col-lg-2 col-md-2">
+                    <div class="logo">
+                        <a href="./index.php">
+                            <img src="img/logooo.png" alt="" style="width:1000px; height:50px;">
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-7 col-md-7">
+                    <!-- Optionally add something here -->
+                </div>
+                <div class="col-lg-3 text-right col-md-3">
+                    <?php
+                    if(isset($_SESSION['uid']) && $_SESSION['uid'] != NULL){
+                    ?>
+                    <ul class="nav-right">
+                        <li class="heart-icon"></li>
+                        <li class="cart-icon">
+                            <a href="#">
+                                <i class="icon_bag_alt"></i>
+                                <span><?php echo $totalorder; ?></span>
                             </a>
-                        </div>
-                    </div>
-                    <div class="col-lg-7 col-md-7">
-                      
-                    </div>
-                    <div class="col-lg-3 text-right col-md-3">
-                        <?php
-                        if(isset($_SESSION['uid']) && $_SESSION['uid'] != NULL){
-                        ?>
-                        <ul class="nav-right">
-                            <li class="heart-icon">
-                               
-                            </li>
-                            <li class="cart-icon">
-                                <a href="#">
-                                    <i class="icon_bag_alt"></i>
-                                    <span><?php echo $totalorder; ?></span>
-                                </a>
-                                <div class="cart-hover">
-                                    <div class="select-items">
-                                        <table>
-                                            <tbody>
-                                                <?php
-                                                while($row = $orders->fetch_assoc()){
-                                                    ?>
-                                                    <tr>
-                                                        <td class="si-pic"><img style="width:75px;height:75px;" src="<?php echo 'admin/'.$row['image']; ?>" alt=""></td>
-                                                        <td class="si-text">
-                                                            <div class="product-selected">
-                                                                <p><?php echo $row['product_name']; ?></p>
-                                                                <h6><?php echo $row['product_details']; ?></h6>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                    <?php
-                                                }
+                            <div class="cart-hover">
+                                <div class="select-items">
+                                    <table>
+                                        <tbody>
+                                            <?php
+                                            while($row = $orders->fetch_assoc()){
                                                 ?>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="select-total">
-                                        <span>total:</span>
-                                        <h5><?php echo $total; ?></h5>
-                                    </div>
-                                    <div class="select-button">
-                                        <a href="shopping-cart.php" class="primary-btn view-card">Keranjang</a>
-                                        <a href="check-out.php" class="primary-btn checkout-btn">CHECK OUT</a>
-                                    </div>
+                                                <tr>
+                                                    <td class="si-pic"><img style="width:75px;height:75px;" src="<?php echo 'admin/'.$row['image']; ?>" alt=""></td>
+                                                    <td class="si-text">
+                                                        <div class="product-selected">
+                                                            <p><?php echo $row['product_name']; ?></p>
+                                                            <h6><?php echo $row['product_details']; ?></h6>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <?php
+                                            }
+                                            ?>
+                                        </tbody>
+                                    </table>
                                 </div>
-                            </li>
-                            <li class="cart-price"><?php echo $total; ?></li>
-                        </ul>
-                        <?php
-                        }
-                        ?>
-                    </div>
+                                <div class="select-total">
+                                    <span>total:</span>
+                                    <h5><?php echo $total; ?></h5>
+                                </div>
+                                <div class="select-button">
+                                    <a href="shopping-cart.php" class="primary-btn view-card">Keranjang</a>
+                                    <a href="check-out.php" class="primary-btn checkout-btn">CHECK OUT</a>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="cart-price"><?php echo $total; ?></li>
+                    </ul>
+                    <?php
+                    }
+                    ?>
                 </div>
             </div>
         </div>
+        </div>
+
         <div class="nav-item">
             <div class="container">
-               
                 <nav class="nav-menu mobile-menu">
                     <ul>
-                        <li class="active"><a href="./index.php">Menu</a></li>
+                        <li><a href="./index.php">Menu</a></li>
                         <li><a href="./shop.php">Belanja</a></li>
                         <li><a href="./contact.php">Kontak</a></li>
                         <li><a href="./aboutus.php">Tentang Kami</a></li>
@@ -173,4 +172,26 @@ if(!isset($_SESSION['uid']) || $_SESSION['uid'] == NULL){
             </div>
         </div>
     </header>
-    <!-- Header End -->
+
+    <!-- Footer and Other Content -->
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Set initial active state based on the current page
+            $('.nav-menu ul li a').each(function() {
+                if (window.location.href === this.href) {
+                    $(this).closest('li').addClass('active');
+                }
+            });
+
+            // Add click event to set active class
+            $('.nav-menu ul li').click(function() {
+                $('.nav-menu ul li').removeClass('active'); // Hapus class 'active' dari semua item
+                $(this).addClass('active'); // Tambahkan class 'active' pada item yang diklik
+            });
+        });
+    </script>
+</body>
+</html>

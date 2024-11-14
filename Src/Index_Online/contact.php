@@ -1,5 +1,7 @@
-<?php include 'header.php';
-?>
+<?php include 'header.php'; ?>
+
+<!-- Link to checked.css for animation and styling -->
+<link rel="stylesheet" href="css/ratingContact.css">
 
 <!-- Breadcrumb Section Begin -->
 <div class="breacrumb-section">
@@ -7,14 +9,14 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="breadcrumb-text">
-                    <a href="#"><i class="fa fa-home"></i>Menu</a>
+                    <a href="#"><i class="fa fa-home"></i> Menu</a>
                     <span>Kontak</span>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!-- Breadcrumb Section Begin -->
+<!-- Breadcrumb Section End -->
 
 <!-- Map Section Begin -->
 <div class="map spad">
@@ -30,36 +32,14 @@
 </div>
 <!-- Map Section End -->
 
-<style>
-.map-inner {
-    position: relative;
-    width: 100%;
-}
-
-.map.spad {
-    padding: 50px 0;
-}
-
-.container {
-    max-width: 1170px;
-    margin: 0 auto;
-    padding: 0 15px;
-}
-
-.map-inner iframe {
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-    border-radius: 10px;
-}
-</style>
-
 <!-- Contact Section Begin -->
 <section class="contact-section spad">
     <div class="container">
         <div class="row">
             <div class="col-lg-5">
                 <div class="contact-title">
-                    <h4>hubungi kami</h4>
-                    <p>Salah Satu Petshop terlengkap di yogyakarta</p>
+                    <h4>Hubungi Kami</h4>
+                    <p>Salah Satu Petshop terlengkap di Yogyakarta</p>
                 </div>
                 <div class="contact-widget">
                     <div class="cw-item">
@@ -68,7 +48,7 @@
                         </div>
                         <div class="ci-text">
                             <span>Alamat :</span>
-                            <p>Jl kanigoro no 232 krodan, maguwoharjo, depok sleman, jogja 55282, Sleman 55282</p>
+                            <p>Jl Kanigoro No 232 Krodan, Maguwoharjo, Depok Sleman, Jogja 55282, Sleman 55282</p>
                         </div>
                     </div>
                     <div class="cw-item">
@@ -93,23 +73,40 @@
             </div>
             <div class="col-lg-6 offset-lg-1">
                 <div class="contact-form">
-                    <div class="leave-comment">
-                        <h4>Silahkan tinggalkan Pesan anda</h4>
-                        <p>Staf kami akan menjawab pertanyaan anda</p>
-                        <form action="" method="post" class="comment-form">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <input type="text" name="name" required placeholder="Nama">
-                                </div>
-                                <div class="col-lg-6">
-                                    <input type="text" name="email" required placeholder="Email">
-                                </div>
-                                <div class="col-lg-12">
-                                    <textarea name="msg" placeholder="Pesan"></textarea>
-                                    <button type="submit" name="submit" class="site-btn">Kirim pesan</button>
-                                </div>
+                    <div class="leave-comment rating-list">
+                        <h4>Rating Pelanggan</h4>
+                        <p>Berikut adalah ulasan dari pelanggan kami</p>
+
+                        <?php
+                        // Query untuk mengambil rating yang tersimpan di database
+                        $query = "SELECT rating_value, tanggal_rating, review FROM rating ORDER BY tanggal_rating DESC";
+                        $result = $conn->query($query);
+
+                        // Cek apakah ada rating yang tersedia
+                        if ($result->num_rows > 0):
+                            while ($row = $result->fetch_assoc()):
+                        ?>
+                        <div class="rating-item">
+                            <div class="rating-icon">
+                                <i class="fa fa-user"></i>
                             </div>
-                        </form>
+                            <div class="rating-stars">
+                                <!-- Display stars based on rating_value -->
+                                <?php for ($i = 1; $i <= 5; $i++): ?>
+                                    <i class="fa fa-star<?= $i <= $row['rating_value'] ? ' checked' : '-o' ?>"></i>
+                                <?php endfor; ?>
+                            </div>
+                            <div class="rating-text">
+                                <small><?= date('F j, Y, g:i a', strtotime($row['tanggal_rating'])); ?></small>
+                                <p>"<?= htmlspecialchars($row['review']); ?>"</p>
+                            </div>
+                        </div>
+                        <?php
+                            endwhile;
+                        else:
+                            echo "<p>No ratings available.</p>";
+                        endif;
+                        ?>
                     </div>
                 </div>
             </div>
