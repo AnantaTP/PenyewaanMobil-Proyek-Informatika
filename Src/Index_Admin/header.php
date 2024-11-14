@@ -142,6 +142,11 @@ if(!isset($_SESSION['admin']) || $_SESSION['admin'] == NULL){
           <span></span>MPV</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" href="pengecekan.php">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Pengecekan</span></a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" href="users.php">
           <i class="fas fa-fw fa-table"></i>
           <span>Pengguna</span></a>
