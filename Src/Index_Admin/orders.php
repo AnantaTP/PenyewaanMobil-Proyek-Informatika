@@ -76,13 +76,13 @@ if (isset($_REQUEST['orderdelete'])) {
         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
           <thead>
             <tr>
-              <th>Id</th>
+              <th>Id Sewa</th>
               <th>Nama</th>
               <th>Gambar</th>
-              <th>Tipe</th>
+              <th>Lama Sewa</th>
               <th>Harga</th>
-              <th>User</th>
-              <th>Pengguna</th>
+              <th>Nama User</th>
+              <th>Alamat</th>
               <th>Status</th>
               <th>Hapus</th>
             </tr>
@@ -97,8 +97,8 @@ if (isset($_REQUEST['orderdelete'])) {
                   <td><?php echo $row['id'] ?></td>
                   <td><?php echo $row['product_name'] ?></td>
                   <td><img src="<?php echo $row['image'] ?>" style="width:100px; height:100px;" class="img-circle"></td>
-                  <td><?php echo ($row['type'] == 0 ? "Pet" : "Accessory"); ?></td>
-                  <td><?php echo $row['product_price'] ?></td>
+                  <td><?php echo $row['lama_sewa'] ?> hari</td>
+                  <td><?php echo $row['total_bayar'] ?></td>
                   <td><?php echo $row['user_name'] ?></td>
                   <td><?php echo $row['address'] ?></td>
                   <td><?php

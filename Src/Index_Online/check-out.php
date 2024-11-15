@@ -1,116 +1,158 @@
-<?php
-include 'header.php';
-session_start();
-
-// Pastikan pengguna sudah login
+<?php include 'header.php';
 if (!isset($_SESSION['uid']) || $_SESSION['uid'] == NULL) {
-    echo "<script>window.location = 'login.php';</script>";
+    ?>
+    <script>
+        window.location = "shop.php";
+    </script>
+    <?php
     exit;
 }
 
-// Koneksi ke database
-require_once 'koneksi.php';
+$uid = $_SESSION['uid'];
+$fetch_orders = "SELECT *, o.id as orderid FROM products p inner join orders o on o.product_id = p.id WHERE user_id = '$uid' and status is NULL";
+$orders = $conn->query($fetch_orders);
 
-// Ambil data mobil dari tabel products untuk menampilkan pilihan
-$query_products = "SELECT * FROM products";
-$products = $conn->query($query_products);
+$total_amount_query = "SELECT sum(p.product_price) as total FROM products p inner join orders o on o.product_id = p.id WHERE user_id = '$uid' and status is NULL";
+$total_amount = $conn->query($total_amount_query);
+$total = 50;
+while ($row = $total_amount->fetch_assoc()) {
+    $total = $row['total'];
+}
+if (isset($_POST['placeorder'])) {
+    // Validasi semua input diperlukan
+    if (!empty($_POST['lama_sewa']) && !empty($_POST['address']) && !empty($_POST['tanggal_mulai_sewa']) && !empty($_FILES['foto_ktp']['name'])) {
 
-// Proses update jika tombol 'update' diklik
-if (isset($_POST['update'])) {
-    // Ambil data yang dikirimkan dari form
-    $id_mobil = $_POST['id_mobil']; // ID mobil yang dipilih
-    $tanggal_ganti_oli = $_POST['tanggal_ganti_oli'];
-    $tanggal_ganti_ban = $_POST['tanggal_ganti_ban'];
-    $tanggal_service_rutin = $_POST['tanggal_service_rutin'];
+        $lama_sewa = intval($_POST['lama_sewa']);
+        $tanggal_mulai_sewa = $_POST['tanggal_mulai_sewa'];
+        $tanggal_kembali = date('Y-m-d', strtotime("$tanggal_mulai_sewa + $lama_sewa days"));
+        $full_address = $_POST['address']; // Menggunakan 'address' yang konsisten
+        $datetime = date("Y-m-d");
 
-    // Debug: Pastikan data yang dikirimkan sudah benar
-    var_dump($_POST); // Debugging form data
-    exit; // Hentikan eksekusi di sini agar bisa melihat data
+        // Upload foto KTP
+        $target_dir = 'admin/uploads/Foto KTP'; // Direktori untuk menyimpan foto
+        $foto_ktp = $target_dir . basename($_FILES['foto_ktp']['name']);
+        if (move_uploaded_file($_FILES['foto_ktp']['tmp_name'], $foto_ktp)) {
+            // Menghitung total bayar berdasarkan lama sewa
+            $total_belanja = $total * $lama_sewa;
 
-    // Pastikan ada setidaknya satu tanggal yang diinputkan
-    $update_fields = [];
-    if (!empty($tanggal_ganti_oli)) {
-        $update_fields[] = "tanggal_ganti_oli = '$tanggal_ganti_oli'";
-    }
-    if (!empty($tanggal_ganti_ban)) {
-        $update_fields[] = "tanggal_ganti_ban = '$tanggal_ganti_ban'";
-    }
-    if (!empty($tanggal_service_rutin)) {
-        $update_fields[] = "tanggal_service_rutin = '$tanggal_service_rutin'";
-    }
+            // Update atau masukkan data ke tabel orders
+            $place_order_query = "UPDATE orders SET 
+                address = '$full_address', 
+                status = 0, 
+                date = '$datetime', 
+                lama_sewa = '$lama_sewa', 
+                tanggal_kembali = '$tanggal_kembali', 
+                total_bayar = '$total_belanja', 
+                foto_ktp = '$foto_ktp' 
+                WHERE user_id = '$uid' AND status IS NULL";
 
-    // Jika ada data yang perlu diupdate
-    if (count($update_fields) > 0) {
-        // Gabungkan field yang diupdate
-        $update_query = "UPDATE pengecekan SET " . implode(", ", $update_fields) . " WHERE id_mobil = '$id_mobil'";
-
-        // Debug: Pastikan query sudah benar
-        echo "Query Update: " . $update_query;
-        exit; // Hentikan eksekusi di sini agar bisa melihat query
-
-        // Eksekusi query update
-        if ($conn->query($update_query) === TRUE) {
-            echo "<script>alert('Data berhasil diperbarui!'); window.location = 'pengecekan.php';</script>";
+            $result = $conn->query($place_order_query);
+            if ($result === TRUE) {
+                ?>
+                <script>
+                    alert("Thank You For Shopping !");
+                    window.location = "orders.php";
+                </script>
+                <?php
+            } else {
+                ?>
+                <script>
+                    alert("Some error occurred !");
+                </script>
+                <?php
+            }
         } else {
-            echo "<script>alert('Error: " . $conn->error . "');</script>";
+            ?>
+            <script>
+                alert("Failed to upload KTP photo. Please try again.");
+            </script>
+            <?php
         }
     } else {
-        echo "<script>alert('Tidak ada data yang diperbarui');</script>";
+        ?>
+        <script>
+            alert("Please fill all the details, including uploading your KTP photo !");
+        </script>
+        <?php
     }
 }
-
-// Ambil data pengecekan yang sudah ada
-$query_check = "SELECT * FROM pengecekan";
-$check_results = $conn->query($query_check);
 ?>
 
-<!-- Tampilan halaman pengecekan -->
-<div class="container">
-    <h2>Update Data Perawatan Mobil</h2>
-    <form method="post" action="pengecekan.php">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Nama Mobil</th>
-                    <th>Tanggal Ganti Oli</th>
-                    <th>Tanggal Ganti Ban</th>
-                    <th>Tanggal Service Rutin</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while ($row = $check_results->fetch_assoc()) { ?>
-                <tr>
-                    <form method="post" action="pengecekan.php">
-                        <td>
-                            <!-- Dropdown untuk memilih mobil -->
-                            <select name="id_mobil" required>
-                                <?php
-                                // Menampilkan daftar mobil dari tabel products
-                                $products->data_seek(0); // Reset pointer result set
-                                while ($product = $products->fetch_assoc()) {
-                                    // Menandai mobil yang sudah ada di pengecekan
-                                    $selected = ($product['id'] == $row['id_mobil']) ? 'selected' : '';
-                                    echo "<option value='" . $product['id'] . "' $selected>" . $product['nama_mobil'] . "</option>";
-                                }
-                                ?>
-                            </select>
-                        </td>
-                        <td><input type="date" name="tanggal_ganti_oli" value="<?= $row['tanggal_ganti_oli']; ?>"></td>
-                        <td><input type="date" name="tanggal_ganti_ban" value="<?= $row['tanggal_ganti_ban']; ?>"></td>
-                        <td><input type="date" name="tanggal_service_rutin" value="<?= $row['tanggal_service_rutin']; ?>"></td>
-                        <td>
-                            <!-- Tombol update -->
-                            <button type="submit" name="update" class="btn btn-primary" onclick="return confirm('Apakah Anda yakin ingin memperbarui data ini?');">Update</button>
-                        </td>
-                    </form>
-                </tr>
-                <?php } ?>
-            </tbody>
-        </table>
-    </form>
+<!-- Breadcrumb Section Begin -->
+<div class="breacrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-text product-more">
+                    <a href="./index.html"><i class="fa fa-home"></i> Menu</a>
+                    <a href="./shop.html">belanja</a>
+                    <span>Check Out</span>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
-<?php
-include 'footer.php';
-?>
+<!-- Shopping Cart Section Begin -->
+<section class="checkout-section spad">
+    <div class="container">
+        <form method="post" enctype="multipart/form-data" class="checkout-form"> <!-- Menambahkan enctype -->
+            <div class="row">
+                <div class="col-lg-6">
+                    <h4>Details</h4>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <label for="lama_sewa">Lama Sewa (hari)<span>*</span></label>
+                            <input type="number" id="lama_sewa" name="lama_sewa" min="1" required>
+                        </div>
+                        <div class="col-lg-12">
+                            <label for="street">Alamat<span>*</span></label>
+                            <input type="text" id="street" class="street-first" name="address" required>
+                            <!-- Menggunakan 'address' yang konsisten -->
+                        </div>
+                        <div class="col-lg-12">
+                            <label for="tanggal_mulai_sewa">Tanggal Mulai Sewa<span>*</span></label>
+                            <input type="date" id="tanggal_mulai_sewa" name="tanggal_mulai_sewa" required>
+                        </div>
+                        <div class="col-lg-12">
+                            <label for="foto_ktp">Foto KTP<span>*</span></label>
+                            <input type="file" id="foto_ktp" name="foto_ktp" accept="image/*" required>
+                        </div>
+                        <div class="col-lg-12">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="place-order">
+                        <h4>Orderan Anda</h4>
+                        <div class="order-total">
+                            <ul class="order-table">
+                                <li>Produk<span>Harga</span></li>
+                                <?php
+                                $total_belanja = 0; // Inisialisasi variabel untuk total belanja
+                                while ($row = $orders->fetch_assoc()) {
+                                    $total_belanja += $row['product_price']; // Menambahkan harga produk ke total belanja
+                                    ?>
+                                    <li class="fw-normal">
+                                        <?php echo $row['product_name'] ?><span><?php echo number_format($row['product_price'], 2) ?></span>
+                                    </li>
+                                    <?php
+                                }
+                                ?>
+                                <li class="fw-bold">Total
+                                    Belanja<span><?php echo number_format($total_belanja, 2) ?></span></li>
+                                <!-- Menampilkan total belanja -->
+                            </ul>
+                            <div class="order-btn">
+                                <button type="submit" class="site-btn place-btn" name="placeorder">Buat Pesanan</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+<!-- Shopping Cart Section End -->
+
+<?php include 'footer.php'; ?>
