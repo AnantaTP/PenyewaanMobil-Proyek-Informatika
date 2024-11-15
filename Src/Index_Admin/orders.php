@@ -81,7 +81,7 @@ if (isset($_REQUEST['orderdelete'])) {
               <th>Gambar</th>
               <th>Lama Sewa</th>
               <th>Harga</th>
-              <th>Nama User</th>
+              <th>Nama Customer</th>
               <th>Alamat</th>
               <th>Status</th>
               <th>Hapus</th>
