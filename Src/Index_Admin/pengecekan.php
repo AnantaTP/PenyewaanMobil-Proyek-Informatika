@@ -1,72 +1,79 @@
 <?php
-include 'header.php';
+include 'header.php';  // Termasuk header dan koneksi database
 
-// Fetch all products (id, product_name)
+// Mengambil data produk (mobil) dari tabel products
 $fetch_products = "SELECT id, product_name FROM products";
 $products = $conn->query($fetch_products);
 
-// Fetch all maintenance data (id_mobil, tanggal_service_rutin, tanggal_ganti_ban, tanggal_ganti_oli)
-$fetch_maintenance = "SELECT * FROM pengecekan";
+// Mengambil data perawatan dari tabel pengecekan dengan JOIN
+$fetch_maintenance = "
+    SELECT 
+        pengecekan.id_perawatan, 
+        pengecekan.id_mobil, 
+        products.product_name, 
+        pengecekan.tanggal_perawatan, 
+        pengecekan.perawatan_mesin, 
+        pengecekan.perawatan_ban, 
+        pengecekan.perawatan_oli
+    FROM pengecekan
+    JOIN products ON pengecekan.id_mobil = products.id
+";
 $maintenance = $conn->query($fetch_maintenance);
 
-// Handling the update request
+// Menangani permintaan untuk memperbarui data perawatan
 if (isset($_POST['update_maintenance'])) {
+    $id_perawatan = $_POST['id_perawatan'];
     $id_mobil = $_POST['id_mobil'];
-    $tanggal_service_rutin = $_POST['tanggal_service_rutin'];
-    $tanggal_ganti_ban = $_POST['tanggal_ganti_ban'];
-    $tanggal_ganti_oli = $_POST['tanggal_ganti_oli'];
+    $tanggal_perawatan = $_POST['tanggal_perawatan'];
+    $perawatan_mesin = $_POST['perawatan_mesin'];
+    $perawatan_ban = $_POST['perawatan_ban'];
+    $perawatan_oli = $_POST['perawatan_oli'];
 
-    // Build the update query dynamically
-    $update_query = "UPDATE pengecekan SET ";
-    $fields_to_update = [];
+    // Query untuk memperbarui data perawatan
+    $update_query = "
+        UPDATE pengecekan 
+        SET 
+            tanggal_perawatan = '$tanggal_perawatan',
+            perawatan_mesin = '$perawatan_mesin',
+            perawatan_ban = '$perawatan_ban',
+            perawatan_oli = '$perawatan_oli'
+        WHERE id_perawatan = '$id_perawatan'
+    ";
 
-    // Check if tanggal_service_rutin was changed
-    if (!empty($tanggal_service_rutin)) {
-        $fields_to_update[] = "tanggal_service_rutin = '$tanggal_service_rutin'";
-    }
-
-    // Check if tanggal_ganti_ban was changed
-    if (!empty($tanggal_ganti_ban)) {
-        $fields_to_update[] = "tanggal_ganti_ban = '$tanggal_ganti_ban'";
-    }
-
-    // Check if tanggal_ganti_oli was changed
-    if (!empty($tanggal_ganti_oli)) {
-        $fields_to_update[] = "tanggal_ganti_oli = '$tanggal_ganti_oli'";
-    }
-
-    // If there are fields to update, join them to the query
-    if (!empty($fields_to_update)) {
-        $update_query .= implode(", ", $fields_to_update);
-        $update_query .= " WHERE id_mobil = '$id_mobil'";
-
-        if ($conn->query($update_query) === TRUE) {
-            echo "<script>alert('Data perawatan berhasil diperbarui'); window.location.href='pengecekan.php';</script>";
-        } else {
-            echo "<script>alert('Terjadi kesalahan saat memperbarui data perawatan');</script>";
-        }
+    if ($conn->query($update_query) === TRUE) {
+        echo "<script>alert('Data perawatan berhasil diperbarui.'); window.location.href='pengecekan.php';</script>";
     } else {
-        echo "<script>alert('Tidak ada perubahan yang dilakukan.');</script>";
+        echo "<script>alert('Terjadi kesalahan: " . $conn->error . "');</script>";
     }
-    exit;
+}
+
+// Menangani permintaan untuk menambah data perawatan baru
+if (isset($_POST['add_maintenance'])) {
+    $id_mobil = $_POST['id_mobil'];
+    $tanggal_perawatan = $_POST['tanggal_perawatan'];
+    $perawatan_mesin = $_POST['perawatan_mesin'];
+    $perawatan_ban = $_POST['perawatan_ban'];
+    $perawatan_oli = $_POST['perawatan_oli'];
+
+    // Query untuk menambahkan data perawatan baru
+    $insert_query = "
+        INSERT INTO pengecekan (id_mobil, tanggal_perawatan, perawatan_mesin, perawatan_ban, perawatan_oli)
+        VALUES ('$id_mobil', '$tanggal_perawatan', '$perawatan_mesin', '$perawatan_ban', '$perawatan_oli')
+    ";
+
+    if ($conn->query($insert_query) === TRUE) {
+        echo "<script>alert('Data perawatan berhasil ditambahkan.'); window.location.href='pengecekan.php';</script>";
+    } else {
+        echo "<script>alert('Terjadi kesalahan: " . $conn->error . "');</script>";
+    }
 }
 ?>
 
 <!-- Begin Page Content -->
 <script>
-    // Function to confirm the update before submitting
-    function confirmUpdate(form, field) {
-        let fieldName = '';
-        if (field === 'tanggal_service_rutin') {
-            fieldName = 'tanggal service rutin';
-        } else if (field === 'tanggal_ganti_ban') {
-            fieldName = 'tanggal ganti ban';
-        } else if (field === 'tanggal_ganti_oli') {
-            fieldName = 'tanggal ganti oli';
-        }
-
-        // Display a confirmation prompt before updating
-        if (confirm("Apakah Anda yakin ingin memperbarui " + fieldName + "?")) {
+    // Fungsi untuk mengonfirmasi pembaruan sebelum submit
+    function confirmUpdate(form) {
+        if (confirm("Apakah Anda yakin ingin memperbarui data perawatan ini?")) {
             form.submit();
         } else {
             return false;
@@ -75,7 +82,6 @@ if (isset($_POST['update_maintenance'])) {
 </script>
 
 <div class="container-fluid">
-    <!-- Page Heading -->
     <h1 class="h3 mb-2 text-gray-800" style='display: inline-block;'>Daftar Perawatan Mobil</h1>
 
     <!-- DataTales Example -->
@@ -88,57 +94,51 @@ if (isset($_POST['update_maintenance'])) {
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
+                            <th>ID Perawatan</th>
                             <th>ID Mobil</th>
                             <th>Nama Mobil</th>
-                            <th>Tanggal Service Rutin</th>
-                            <th>Tanggal Ganti Ban</th>
-                            <th>Tanggal Ganti Oli</th>
+                            <th>Tanggal Perawatan</th>
+                            <th>Perawatan Mesin</th>
+                            <th>Perawatan Ban</th>
+                            <th>Perawatan Oli</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
                         if ($maintenance->num_rows > 0) {
                             while ($row = $maintenance->fetch_assoc()) {
-                                // Get the product name using the id_mobil
-                                $product_name = "";
-                                if ($products->num_rows > 0) {
-                                    $products->data_seek(0); // Reset the pointer to start from the beginning of the products
-                                    while ($product_row = $products->fetch_assoc()) {
-                                        if ($product_row['id'] == $row['id_mobil']) {
-                                            $product_name = $product_row['product_name'];
-                                            break;
-                                        }
-                                    }
-                                }
                                 ?>
                                 <form method="POST" action="pengecekan.php">
                                     <tr>
+                                        <td><?php echo $row['id_perawatan']; ?></td>
                                         <td><?php echo $row['id_mobil']; ?></td>
-                                        <td><?php echo $product_name; ?></td>
+                                        <td><?php echo $row['product_name']; ?></td>
                                         <td>
-                                            <input type="date" name="tanggal_service_rutin"
-                                                value="<?php echo $row['tanggal_service_rutin']; ?>"
-                                                onchange="confirmUpdate(this.form, 'tanggal_service_rutin');">
+                                            <input type="date" name="tanggal_perawatan"
+                                                value="<?php echo $row['tanggal_perawatan']; ?>">
                                         </td>
                                         <td>
-                                            <input type="date" name="tanggal_ganti_ban"
-                                                value="<?php echo $row['tanggal_ganti_ban']; ?>"
-                                                onchange="confirmUpdate(this.form, 'tanggal_ganti_ban');">
+                                            <textarea name="perawatan_mesin"><?php echo $row['perawatan_mesin']; ?></textarea>
                                         </td>
                                         <td>
-                                            <input type="date" name="tanggal_ganti_oli"
-                                                value="<?php echo $row['tanggal_ganti_oli']; ?>"
-                                                onchange="confirmUpdate(this.form, 'tanggal_ganti_oli');">
+                                            <textarea name="perawatan_ban"><?php echo $row['perawatan_ban']; ?></textarea>
                                         </td>
                                         <td>
-                                            <input type="hidden" name="id_mobil" value="<?php echo $row['id_mobil']; ?>">
+                                            <textarea name="perawatan_oli"><?php echo $row['perawatan_oli']; ?></textarea>
+                                        </td>
+                                        <td>
+                                            <input type="hidden" name="id_perawatan"
+                                                value="<?php echo $row['id_perawatan']; ?>">
+                                            <button type="submit" name="update_maintenance" class="btn btn-primary"
+                                                onclick="confirmUpdate(this.form)">Update</button>
                                         </td>
                                     </tr>
                                 </form>
                                 <?php
                             }
                         } else {
-                            echo "<tr><td colspan='5'>No maintenance records found.</td></tr>";
+                            echo "<tr><td colspan='8'>Tidak ada data perawatan ditemukan.</td></tr>";
                         }
                         ?>
                     </tbody>
@@ -146,29 +146,50 @@ if (isset($_POST['update_maintenance'])) {
             </div>
         </div>
     </div>
+
+    <!-- Formulir untuk Menambah Perawatan Mobil Baru -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Tambah Perawatan Mobil Baru</h6>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="pengecekan.php">
+                <div class="form-group">
+                    <label for="id_mobil">Pilih Mobil</label>
+                    <select class="form-control" name="id_mobil" required>
+                        <option value="">Pilih Mobil</option>
+                        <?php
+                        // Menampilkan daftar mobil dari tabel products
+                        if ($products->num_rows > 0) {
+                            while ($product_row = $products->fetch_assoc()) {
+                                echo "<option value='" . $product_row['id'] . "'>" . $product_row['product_name'] . "</option>";
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="tanggal_perawatan">Tanggal Perawatan</label>
+                    <input type="date" class="form-control" name="tanggal_perawatan" required>
+                </div>
+                <div class="form-group">
+                    <label for="perawatan_mesin">Perawatan Mesin</label>
+                    <textarea class="form-control" name="perawatan_mesin" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="perawatan_ban">Perawatan Ban</label>
+                    <textarea class="form-control" name="perawatan_ban" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="perawatan_oli">Perawatan Oli</label>
+                    <textarea class="form-control" name="perawatan_oli" rows="3"></textarea>
+                </div>
+                <button type="submit" name="add_maintenance" class="btn btn-success">Tambah Mobil</button>
+            </form>
+        </div>
+    </div>
 </div>
 <!-- /.container-fluid -->
 
 </div>
 <!-- End of Main Content -->
-
-</div>
-<!-- End of Page Wrapper -->
-
-<!-- Scroll to Top Button-->
-<a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-</a>
-
-<!-- Bootstrap core JavaScript-->
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-<!-- Core plugin JavaScript-->
-<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-<!-- Custom scripts for all pages-->
-<script src="js/sb-admin-2.min.js"></script>
-
-<!-- Page level plugins -->
-<script src="vendor/datatables/jquery.dataTables.min.js"></script
