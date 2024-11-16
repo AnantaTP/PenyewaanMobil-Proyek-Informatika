@@ -1,22 +1,23 @@
-<?php include 'header.php';
+<?php
+include 'header.php';
+
+// Pastikan user sudah login
 if (!isset($_SESSION['uid']) || $_SESSION['uid'] == NULL) {
-    ?>
-    <script>
-        window.location = "login.php";
-    </script>
-    <?php
+    echo "<script>window.location = 'login.php';</script>";
     exit;
 }
+
 $uid = $_SESSION['uid'];
-$fetch_orders = "SELECT *, o.id as orderid FROM products p inner join orders o on o.product_id = p.id WHERE user_id = '$uid' and status IS NOT NULL";
+$fetch_orders = "SELECT *, o.id as orderid FROM products p INNER JOIN orders o ON o.product_id = p.id WHERE user_id = '$uid' AND status IS NOT NULL";
 $orders = $conn->query($fetch_orders);
 
-$total_amount_query = "SELECT sum(p.product_price) as total FROM products p inner join orders o on o.product_id = p.id WHERE user_id = '$uid' and status IS NOT NULL";
+$total_amount_query = "SELECT SUM(p.product_price) AS total FROM products p INNER JOIN orders o ON o.product_id = p.id WHERE user_id = '$uid' AND status IS NOT NULL";
 $total_amount = $conn->query($total_amount_query);
 $total = 50;
 while ($row = $total_amount->fetch_assoc()) {
     $total = $row['total'];
 }
+
 ?>
 
 <head>
@@ -161,6 +162,7 @@ while ($row = $total_amount->fetch_assoc()) {
             <form action="controlRating.php" method="post">
                 <div class="modal-body text-center">
                     <input type="hidden" name="rating_value" id="ratingInput"> <!-- Hidden input to store rating -->
+                    <input type="hidden" name="order_id" id="ratingOrderId"> <!-- Hidden input for order ID -->
                     <label for="rating">Select Rating:</label>
                     <div>
                         <!-- Star icons for rating -->
@@ -182,18 +184,6 @@ while ($row = $total_amount->fetch_assoc()) {
                     <button type="submit" class="btn btn-primary">Submit Rating</button>
                 </div>
             </form>
-
-            <script>
-                function setRating(star) {
-                    document.getElementById('ratingInput').value = star; // Set the integer value to hidden input
-                    // Update the star icons' appearance
-                    const stars = document.querySelectorAll('.fa-star');
-                    stars.forEach((s, index) => {
-                        s.classList.toggle('checked', index < star); // Highlight stars up to the selected rating
-                    });
-                }
-            </script>
-
         </div>
     </div>
 </div>

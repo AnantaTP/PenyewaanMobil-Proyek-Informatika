@@ -1,5 +1,10 @@
 <?php include 'header.php';
-$fetch_data = "SELECT * FROM rating";
+
+// Update query untuk join tabel rating dan user_details
+$fetch_data = "SELECT r.id_rating, r.rating_value, r.tanggal_rating, r.review, 
+                      CONCAT(u.first_name, ' ', u.last_name) AS user_name 
+               FROM rating r 
+               JOIN user_details u ON r.id_user = u.id";
 $result = $conn->query($fetch_data);
 ?>
 
@@ -20,6 +25,7 @@ $result = $conn->query($fetch_data);
                     <thead>
                         <tr>
                             <th>id_rating</th>
+                            <th>Nama Pengguna</th>
                             <th>Rating</th>
                             <th>Tanggal Rating</th>
                             <th>Review</th>
@@ -28,12 +34,13 @@ $result = $conn->query($fetch_data);
                     <tbody>
                         <?php
                         if ($result->num_rows > 0) {
-                            // output data of each row
+                            // Output data of each row
                             while ($row = $result->fetch_assoc()) {
                                 $rating_value = $row['rating_value']; // Mendapatkan rating_value
                                 ?>
                                 <tr>
                                     <td><?php echo $row['id_rating'] ?></td>
+                                    <td><?php echo $row['user_name'] ?></td> <!-- Menampilkan Nama Pengguna -->
                                     <td>
                                         <!-- Menampilkan bintang berdasarkan rating_value -->
                                         <?php
@@ -53,7 +60,7 @@ $result = $conn->query($fetch_data);
                                 <?php
                             }
                         } else {
-                            echo "<tr><td colspan='4'>Tidak ada rating</td></tr>";
+                            echo "<tr><td colspan='5'>Tidak ada rating</td></tr>";
                         }
                         ?>
                     </tbody>

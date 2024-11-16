@@ -78,8 +78,11 @@
                         <p>Berikut adalah ulasan dari pelanggan kami</p>
 
                         <?php
-                        // Query untuk mengambil rating yang tersimpan di database
-                        $query = "SELECT rating_value, tanggal_rating, review FROM rating ORDER BY tanggal_rating DESC";
+                        // Query untuk mengambil rating dan nama pengguna dari database
+                        $query = "SELECT r.rating_value, r.tanggal_rating, r.review, CONCAT(u.first_name, ' ', u.last_name) AS user_name 
+                                  FROM rating r 
+                                  JOIN user_details u ON r.id_user = u.id 
+                                  ORDER BY r.tanggal_rating DESC";
                         $result = $conn->query($query);
 
                         // Cek apakah ada rating yang tersedia
@@ -97,7 +100,7 @@
                                 <?php endfor; ?>
                             </div>
                             <div class="rating-text">
-                                <small><?= date('F j, Y, g:i a', strtotime($row['tanggal_rating'])); ?></small>
+                                <small><?= date('F j, Y, g:i a', strtotime($row['tanggal_rating'])); ?> - <strong><?= htmlspecialchars($row['user_name']); ?></strong></small>
                                 <p>"<?= htmlspecialchars($row['review']); ?>"</p>
                             </div>
                         </div>
