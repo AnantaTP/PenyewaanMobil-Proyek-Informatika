@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 14, 2024 at 04:28 PM
+-- Generation Time: Nov 16, 2024 at 10:29 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -59,8 +59,15 @@ CREATE TABLE `orders` (
   `lama_sewa` int(11) DEFAULT NULL,
   `total_bayar` decimal(10,2) DEFAULT NULL,
   `foto_ktp` varchar(255) DEFAULT NULL,
-  `status` tinyint(4) DEFAULT NULL COMMENT '0 = "Sudah Bayar", 1 = "Mobil Diambil", 2 = "Mobil Dikembalikan", 3 = "Dibatalkan", 4 = "Ditinjau"'
+  `status` tinyint(4) DEFAULT NULL COMMENT '0 = "Sudah Bayar", 1 = "Mobil Diambil", 2 = "Mobil Dikembalikan", 3 = "Dibatalkan", 4 = "Selesai"'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `product_id`, `user_id`, `address`, `date`, `tanggal_kembali`, `lama_sewa`, `total_bayar`, `foto_ktp`, `status`) VALUES
+(69, 43, 15, 'mlati', '2024-11-16 00:00:00', '2024-12-01', 2, 500000.00, 'admin/uploads/Foto KTPBendera Indonesia.png', 4);
 
 -- --------------------------------------------------------
 
@@ -71,17 +78,18 @@ CREATE TABLE `orders` (
 CREATE TABLE `pengecekan` (
   `id_perawatan` int(11) NOT NULL,
   `id_mobil` int(11) NOT NULL,
-  `tanggal_service_rutin` date DEFAULT NULL,
-  `tanggal_ganti_ban` date DEFAULT NULL,
-  `tanggal_ganti_oli` date DEFAULT NULL
+  `tanggal_perawatan` date NOT NULL,
+  `perawatan_mesin` text DEFAULT NULL,
+  `perawatan_ban` text DEFAULT NULL,
+  `perawatan_oli` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `pengecekan`
 --
 
-INSERT INTO `pengecekan` (`id_perawatan`, `id_mobil`, `tanggal_service_rutin`, `tanggal_ganti_ban`, `tanggal_ganti_oli`) VALUES
-(2, 43, '2024-11-15', NULL, '2024-11-25');
+INSERT INTO `pengecekan` (`id_perawatan`, `id_mobil`, `tanggal_perawatan`, `perawatan_mesin`, `perawatan_ban`, `perawatan_oli`) VALUES
+(1, 43, '2024-11-19', 'oo', 'ioioi', 'p');
 
 -- --------------------------------------------------------
 
@@ -114,7 +122,8 @@ INSERT INTO `products` (`id`, `type`, `product_name`, `product_details`, `produc
 --
 
 CREATE TABLE `rating` (
-  `id_rating` int(5) NOT NULL,
+  `id_rating` int(11) NOT NULL,
+  `id_user` int(5) NOT NULL,
   `rating_value` int(11) NOT NULL,
   `tanggal_rating` date NOT NULL,
   `review` text DEFAULT NULL
@@ -124,15 +133,20 @@ CREATE TABLE `rating` (
 -- Dumping data for table `rating`
 --
 
-INSERT INTO `rating` (`id_rating`, `rating_value`, `tanggal_rating`, `review`) VALUES
-(1, 3, '2024-11-08', 'd'),
-(2, 1, '2024-11-08', 'jelek'),
-(4, 5, '2024-11-08', 'bagus sekali'),
-(5, 5, '2024-11-12', 'bagus\r\n'),
-(6, 4, '2024-11-13', 'dd'),
-(7, 4, '2024-11-13', 'd'),
-(8, 1, '2024-11-13', 'kontol banget'),
-(9, 3, '2024-11-13', 'jelek');
+INSERT INTO `rating` (`id_rating`, `id_user`, `rating_value`, `tanggal_rating`, `review`) VALUES
+(1, 0, 3, '2024-11-08', 'd'),
+(2, 0, 1, '2024-11-08', 'jelek'),
+(4, 0, 5, '2024-11-08', 'bagus sekali'),
+(5, 0, 5, '2024-11-12', 'bagus\r\n'),
+(6, 0, 4, '2024-11-13', 'dd'),
+(7, 0, 4, '2024-11-13', 'd'),
+(8, 0, 1, '2024-11-13', 'kontol banget'),
+(9, 0, 3, '2024-11-13', 'jelek'),
+(15, 0, 5, '2024-11-16', 'ddd'),
+(16, 12, 3, '2024-11-16', 'ok'),
+(17, 12, 5, '2024-11-16', 'bagus\r\n'),
+(18, 12, 5, '2024-11-16', 'bagus sekali\r\n'),
+(19, 15, 5, '2024-11-16', 'waw bagus banget\r\n');
 
 -- --------------------------------------------------------
 
@@ -158,8 +172,7 @@ CREATE TABLE `user_details` (
 INSERT INTO `user_details` (`id`, `first_name`, `last_name`, `email`, `password`, `contact_no`, `address`, `image`) VALUES
 (11, 'fafa', 'fufu', 'ananta@gmail,com', 'fafa123', '082194983517', 'paingan', 'admin/uploads/profiles/1727266569_hq720_2.jpg'),
 (12, 'a', 'aa', 'a@gmail.com', 'a1', '1', 'a', 'admin/uploads/profiles/1729859574_s.png'),
-(13, 'a', 'a', 'ss@gmail.com', 'ss123', '23', 'aa', 'admin/uploads/profiles/1730165236_1337525.png'),
-(14, 'fgujh', 'gfgj', 'de@gmail.com', '124', '1234567', 'prhjh', 'admin/uploads/profiles/1730167528_accord.jpg');
+(15, 'Ananta', 'Teguh', 'anantateguhprakosa20@gmail.com', 'ananta123', '082194983517', 'Mlati', 'admin/uploads/profiles/1731749063_5c5afe3c0d7296e58b4441d087349e3a.jpg');
 
 --
 -- Indexes for dumped tables
@@ -215,13 +228,13 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
 
 --
 -- AUTO_INCREMENT for table `pengecekan`
 --
 ALTER TABLE `pengecekan`
-  MODIFY `id_perawatan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_perawatan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -233,13 +246,13 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `rating`
 --
 ALTER TABLE `rating`
-  MODIFY `id_rating` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_rating` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `user_details`
 --
 ALTER TABLE `user_details`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
