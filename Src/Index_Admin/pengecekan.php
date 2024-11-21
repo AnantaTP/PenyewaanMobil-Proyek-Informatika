@@ -20,33 +20,6 @@ $fetch_maintenance = "
 ";
 $maintenance = $conn->query($fetch_maintenance);
 
-// Menangani permintaan untuk memperbarui data perawatan
-if (isset($_POST['update_maintenance'])) {
-    $id_perawatan = $_POST['id_perawatan'];
-    $id_mobil = $_POST['id_mobil'];
-    $tanggal_perawatan = $_POST['tanggal_perawatan'];
-    $perawatan_mesin = $_POST['perawatan_mesin'];
-    $perawatan_ban = $_POST['perawatan_ban'];
-    $perawatan_oli = $_POST['perawatan_oli'];
-
-    // Query untuk memperbarui data perawatan
-    $update_query = "
-        UPDATE pengecekan 
-        SET 
-            tanggal_perawatan = '$tanggal_perawatan',
-            perawatan_mesin = '$perawatan_mesin',
-            perawatan_ban = '$perawatan_ban',
-            perawatan_oli = '$perawatan_oli'
-        WHERE id_perawatan = '$id_perawatan'
-    ";
-
-    if ($conn->query($update_query) === TRUE) {
-        echo "<script>alert('Data perawatan berhasil diperbarui.'); window.location.href='pengecekan.php';</script>";
-    } else {
-        echo "<script>alert('Terjadi kesalahan: " . $conn->error . "');</script>";
-    }
-}
-
 // Menangani permintaan untuk menambah data perawatan baru
 if (isset($_POST['add_maintenance'])) {
     $id_mobil = $_POST['id_mobil'];
@@ -61,26 +34,11 @@ if (isset($_POST['add_maintenance'])) {
         VALUES ('$id_mobil', '$tanggal_perawatan', '$perawatan_mesin', '$perawatan_ban', '$perawatan_oli')
     ";
 
-    if ($conn->query($insert_query) === TRUE) {
-        echo "<script>alert('Data perawatan berhasil ditambahkan.'); window.location.href='pengecekan.php';</script>";
-    } else {
-        echo "<script>alert('Terjadi kesalahan: " . $conn->error . "');</script>";
-    }
+    
 }
 ?>
 
 <!-- Begin Page Content -->
-<script>
-    // Fungsi untuk mengonfirmasi pembaruan sebelum submit
-    function confirmUpdate(form) {
-        if (confirm("Apakah Anda yakin ingin memperbarui data perawatan ini?")) {
-            form.submit();
-        } else {
-            return false;
-        }
-    }
-</script>
-
 <div class="container-fluid">
     <h1 class="h3 mb-2 text-gray-800" style='display: inline-block;'>Daftar Perawatan Mobil</h1>
 
@@ -88,6 +46,8 @@ if (isset($_POST['add_maintenance'])) {
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Perawatan Mobil</h6>
+            <!-- Tombol diarahkan ke laporan.php -->
+            
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -101,7 +61,6 @@ if (isset($_POST['add_maintenance'])) {
                             <th>Perawatan Mesin</th>
                             <th>Perawatan Ban</th>
                             <th>Perawatan Oli</th>
-                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -109,36 +68,19 @@ if (isset($_POST['add_maintenance'])) {
                         if ($maintenance->num_rows > 0) {
                             while ($row = $maintenance->fetch_assoc()) {
                                 ?>
-                                <form method="POST" action="pengecekan.php">
-                                    <tr>
-                                        <td><?php echo $row['id_perawatan']; ?></td>
-                                        <td><?php echo $row['id_mobil']; ?></td>
-                                        <td><?php echo $row['product_name']; ?></td>
-                                        <td>
-                                            <input type="date" name="tanggal_perawatan"
-                                                value="<?php echo $row['tanggal_perawatan']; ?>">
-                                        </td>
-                                        <td>
-                                            <textarea name="perawatan_mesin"><?php echo $row['perawatan_mesin']; ?></textarea>
-                                        </td>
-                                        <td>
-                                            <textarea name="perawatan_ban"><?php echo $row['perawatan_ban']; ?></textarea>
-                                        </td>
-                                        <td>
-                                            <textarea name="perawatan_oli"><?php echo $row['perawatan_oli']; ?></textarea>
-                                        </td>
-                                        <td>
-                                            <input type="hidden" name="id_perawatan"
-                                                value="<?php echo $row['id_perawatan']; ?>">
-                                            <button type="submit" name="update_maintenance" class="btn btn-primary"
-                                                onclick="confirmUpdate(this.form)">Update</button>
-                                        </td>
-                                    </tr>
-                                </form>
+                                <tr>
+                                    <td><?php echo $row['id_perawatan']; ?></td>
+                                    <td><?php echo $row['id_mobil']; ?></td>
+                                    <td><?php echo $row['product_name']; ?></td>
+                                    <td><?php echo $row['tanggal_perawatan']; ?></td>
+                                    <td><?php echo $row['perawatan_mesin']; ?></td>
+                                    <td><?php echo $row['perawatan_ban']; ?></td>
+                                    <td><?php echo $row['perawatan_oli']; ?></td>
+                                </tr>
                                 <?php
                             }
                         } else {
-                            echo "<tr><td colspan='8'>Tidak ada data perawatan ditemukan.</td></tr>";
+                            echo "<tr><td colspan='7'>Tidak ada data perawatan ditemukan.</td></tr>";
                         }
                         ?>
                     </tbody>
@@ -159,7 +101,6 @@ if (isset($_POST['add_maintenance'])) {
                     <select class="form-control" name="id_mobil" required>
                         <option value="">Pilih Mobil</option>
                         <?php
-                        // Menampilkan daftar mobil dari tabel products
                         if ($products->num_rows > 0) {
                             while ($product_row = $products->fetch_assoc()) {
                                 echo "<option value='" . $product_row['id'] . "'>" . $product_row['product_name'] . "</option>";
@@ -190,6 +131,3 @@ if (isset($_POST['add_maintenance'])) {
     </div>
 </div>
 <!-- /.container-fluid -->
-
-</div>
-<!-- End of Main Content -->
