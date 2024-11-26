@@ -1,5 +1,5 @@
 <?php
-include 'header.php';  // Termasuk header dan koneksi database
+include 'header.php'; // Termasuk header dan koneksi database
 
 // Mengambil data produk (mobil) dari tabel products
 $fetch_products = "SELECT id, product_name FROM products";
@@ -17,16 +17,17 @@ $fetch_maintenance = "
         pengecekan.perawatan_oli
     FROM pengecekan
     JOIN products ON pengecekan.id_mobil = products.id
+    ORDER BY pengecekan.tanggal_perawatan DESC
 ";
 $maintenance = $conn->query($fetch_maintenance);
 
 // Menangani permintaan untuk menambah data perawatan baru
 if (isset($_POST['add_maintenance'])) {
-    $id_mobil = $_POST['id_mobil'];
-    $tanggal_perawatan = $_POST['tanggal_perawatan'];
-    $perawatan_mesin = $_POST['perawatan_mesin'];
-    $perawatan_ban = $_POST['perawatan_ban'];
-    $perawatan_oli = $_POST['perawatan_oli'];
+    $id_mobil = $conn->real_escape_string($_POST['id_mobil']);
+    $tanggal_perawatan = $conn->real_escape_string($_POST['tanggal_perawatan']);
+    $perawatan_mesin = $conn->real_escape_string($_POST['perawatan_mesin']);
+    $perawatan_ban = $conn->real_escape_string($_POST['perawatan_ban']);
+    $perawatan_oli = $conn->real_escape_string($_POST['perawatan_oli']);
 
     // Query untuk menambahkan data perawatan baru
     $insert_query = "
@@ -34,7 +35,13 @@ if (isset($_POST['add_maintenance'])) {
         VALUES ('$id_mobil', '$tanggal_perawatan', '$perawatan_mesin', '$perawatan_ban', '$perawatan_oli')
     ";
 
-    
+    if ($conn->query($insert_query) === TRUE) {
+        echo "<script>alert('Data perawatan berhasil ditambahkan!');</script>";
+        echo "<script>window.location.href = 'pengecekan.php';</script>";
+        exit;
+    } else {
+        echo "<script>alert('Terjadi kesalahan: " . $conn->error . "');</script>";
+    }
 }
 ?>
 
@@ -45,9 +52,7 @@ if (isset($_POST['add_maintenance'])) {
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Perawatan Mobil</h6>
-            <!-- Tombol diarahkan ke laporan.php -->
-            
+            <h6 class="m-0 font-weight-bold text-primary">Laporan Perawatan Mobil</h6>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -125,7 +130,7 @@ if (isset($_POST['add_maintenance'])) {
                     <label for="perawatan_oli">Perawatan Oli</label>
                     <textarea class="form-control" name="perawatan_oli" rows="3"></textarea>
                 </div>
-                <button type="submit" name="add_maintenance" class="btn btn-success">Tambah Mobil</button>
+                <button type="submit" name="add_maintenance" class="btn btn-success">Tambah Perawatan</button>
             </form>
         </div>
     </div>
