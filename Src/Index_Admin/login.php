@@ -1,39 +1,52 @@
-<?php include 'config.php';
-if(isset($_SESSION['admin']) && $_SESSION['admin'] != NULL){
+<?php 
+// Memulai session untuk menggunakan session
+session_start();
+
+// Include config.php untuk koneksi database
+include 'config.php';
+
+// Jika admin sudah login, arahkan ke index.php
+if (isset($_SESSION['admin']) && $_SESSION['admin'] != NULL) {
   ?>
   <script>
-  window.location = "index.php";
+    window.location = "index.php"; // Jika sudah login, arahkan ke index.php
   </script>
   <?php
-} 
-if(isset($_POST['adminlogin'])){
-  if($_POST['email'] != NULL && $_POST['pass'] != NULL){
+}
+
+// Proses login saat form disubmit
+if (isset($_POST['adminlogin'])) {  // Pastikan tombolnya adalah 'adminlogin'
+  if ($_POST['email'] != NULL && $_POST['pass'] != NULL) {
     $email = $_POST['email'];
     $pass = $_POST['pass'];
-    $check_admin = "select * from admin where admin_email = '$email' and admin_password = '$pass'";
+
+    // Periksa kecocokan admin berdasarkan email dan password
+    $check_admin = "SELECT * FROM admin WHERE admin_email = '$email' AND admin_password = '$pass'";
     $result = $conn->query($check_admin);
-    if($result->num_rows > 0){
-      while($row = $result->fetch_assoc()){
-        $_SESSION['admin'] = $row['admin_email'];
+
+    if ($result->num_rows > 0) {
+      // Jika data cocok, set session admin
+      while ($row = $result->fetch_assoc()) {
+        $_SESSION['admin'] = $row['admin_email']; // Menyimpan email admin di session
       }
       ?>
       <script>
-        window.location = "index.php";
-        </script>
+        window.location = "index.php"; // Setelah login, redirect ke index.php
+      </script>
       <?php
-    }else{
+    } else {
       ?>
       <script>
-        alert("No match found !");
-        </script>
+        alert("No match found!"); // Menampilkan pesan jika tidak ada kecocokan
+      </script>
       <?php
     }
-  }else{
+  } else {
     ?>
-      <script>
-        alert("Fill all the fields !");
-        </script>
-      <?php
+    <script>
+      alert("Fill all the fields!"); // Menampilkan pesan jika form tidak lengkap
+    </script>
+    <?php
   }
 }
 ?>
@@ -124,6 +137,9 @@ if(isset($_POST['adminlogin'])){
                     </button>
                     <hr>
                   </form>
+                  <div class="text-center">
+                    <a class="small" href="register.php">Don't have an account? Register here!</a>
+                  </div>
                 </div>
               </div>
             </div>

@@ -86,6 +86,7 @@ if (isset($_POST['placeorder'])) {
                 <div class="breadcrumb-text product-more">
                     <a href="./index.html"><i class="fa fa-home"></i> Menu</a>
                     <a href="./shop.html">belanja</a>
+                    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
                     <span>Check Out</span>
                 </div>
             </div>
@@ -145,6 +146,26 @@ if (isset($_POST['placeorder'])) {
                             </ul>
                             <div class="order-btn">
                                 <button type="submit" class="site-btn place-btn" name="placeorder">Buat Pesanan</button>
+                            </div>
+                        </div>
+
+                        <!-- Nomor Rekening dan Ikon Bank -->
+                        <div class="order-bank-info">
+                            <h5>Pembayaran</h5>
+                            <p>Silakan transfer pembayaran ke rekening berikut:</p>
+                            <div class="bank-account-info">
+                                <div class="row">
+                                    <div class="col-12 col-md-6">
+                                        <p><strong>Bank Mandiri</strong></p>
+                                        <p>Nomor Rekening: <strong>1600004535890</strong></p>
+                                        <p>Atas Nama: <strong>PT Sewa Mobil</strong></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="payment-icons">
+                                <i class="fab fa-cc-visa"></i>
+                                <i class="fab fa-cc-mastercard"></i>
+                                <i class="fab fa-cc-paypal"></i>
                             </div>
                         </div>
                     </div>
