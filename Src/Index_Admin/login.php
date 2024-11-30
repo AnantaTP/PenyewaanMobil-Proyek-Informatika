@@ -1,6 +1,4 @@
 <?php 
-// Memulai session untuk menggunakan session
-session_start();
 
 // Include config.php untuk koneksi database
 include 'config.php';
