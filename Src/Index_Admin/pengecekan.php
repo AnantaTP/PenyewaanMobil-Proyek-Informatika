@@ -135,4 +135,3 @@ if (isset($_POST['add_maintenance'])) {
         </div>
     </div>
 </div>
-<!-- /.container-fluid -->
