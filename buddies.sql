@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 16, 2024 at 10:29 AM
+-- Generation Time: Nov 30, 2024 at 05:49 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -40,7 +40,6 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`id`, `admin_name`, `admin_email`, `admin_password`, `image`) VALUES
-(1, 'Glen', 'devitglen@gmail.com', '123456', ''),
 (3, 'admin', 'admin@gmail.com', 'admin123', '');
 
 -- --------------------------------------------------------
@@ -51,7 +50,7 @@ INSERT INTO `admin` (`id`, `admin_name`, `admin_email`, `admin_password`, `image
 
 CREATE TABLE `orders` (
   `id` int(11) NOT NULL,
-  `product_id` int(11) NOT NULL,
+  `plat_nomor` varchar(10) NOT NULL,
   `user_id` int(11) NOT NULL,
   `address` varchar(300) DEFAULT NULL,
   `date` datetime NOT NULL,
@@ -62,13 +61,6 @@ CREATE TABLE `orders` (
   `status` tinyint(4) DEFAULT NULL COMMENT '0 = "Sudah Bayar", 1 = "Mobil Diambil", 2 = "Mobil Dikembalikan", 3 = "Dibatalkan", 4 = "Selesai"'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `orders`
---
-
-INSERT INTO `orders` (`id`, `product_id`, `user_id`, `address`, `date`, `tanggal_kembali`, `lama_sewa`, `total_bayar`, `foto_ktp`, `status`) VALUES
-(69, 43, 15, 'mlati', '2024-11-16 00:00:00', '2024-12-01', 2, 500000.00, 'admin/uploads/Foto KTPBendera Indonesia.png', 4);
-
 -- --------------------------------------------------------
 
 --
@@ -77,7 +69,7 @@ INSERT INTO `orders` (`id`, `product_id`, `user_id`, `address`, `date`, `tanggal
 
 CREATE TABLE `pengecekan` (
   `id_perawatan` int(11) NOT NULL,
-  `id_mobil` int(11) NOT NULL,
+  `plat_nomor` varchar(10) NOT NULL,
   `tanggal_perawatan` date NOT NULL,
   `perawatan_mesin` text DEFAULT NULL,
   `perawatan_ban` text DEFAULT NULL,
@@ -88,8 +80,11 @@ CREATE TABLE `pengecekan` (
 -- Dumping data for table `pengecekan`
 --
 
-INSERT INTO `pengecekan` (`id_perawatan`, `id_mobil`, `tanggal_perawatan`, `perawatan_mesin`, `perawatan_ban`, `perawatan_oli`) VALUES
-(1, 43, '2024-11-19', 'oo', 'ioioi', 'p');
+INSERT INTO `pengecekan` (`id_perawatan`, `plat_nomor`, `tanggal_perawatan`, `perawatan_mesin`, `perawatan_ban`, `perawatan_oli`) VALUES
+(1, '43', '2024-11-26', 'oo', 'ganti ban sepeda', 'p'),
+(2, '45', '2024-11-05', 'ganti busi', '', 'oli shell'),
+(3, '43', '2024-11-29', 'aa', 'a', 'aa'),
+(4, '43', '2024-11-27', 'Ganti oli', 'Ganti ban', 'Ganti oli transmisi');
 
 -- --------------------------------------------------------
 
@@ -98,7 +93,7 @@ INSERT INTO `pengecekan` (`id_perawatan`, `id_mobil`, `tanggal_perawatan`, `pera
 --
 
 CREATE TABLE `products` (
-  `id` int(11) NOT NULL,
+  `plat_nomor` varchar(10) NOT NULL,
   `type` tinyint(4) NOT NULL COMMENT '0 = "LCGC", 1 = "MPV"',
   `product_name` varchar(100) NOT NULL,
   `product_details` varchar(300) NOT NULL,
@@ -110,10 +105,10 @@ CREATE TABLE `products` (
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `type`, `product_name`, `product_details`, `product_price`, `image`) VALUES
-(43, 0, 'Toyota Agya', 'LCGC', '250000', 'uploads/1731586756_images-removebg-preview.png'),
-(44, 1, 'Toyota Avanza Veloz', 'MPV', '300000', 'uploads/accessories/1731586822_Avanza-removebg-preview.png'),
-(45, 1, 'Wuling Confero', 'Wuling', '300000', 'uploads/accessories/1731591124_Wuling-removebg-preview.png');
+INSERT INTO `products` (`plat_nomor`, `type`, `product_name`, `product_details`, `product_price`, `image`) VALUES
+('43', 0, 'Toyota Agya', 'LCGC', '250000', 'uploads/1731586756_images-removebg-preview.png'),
+('44', 1, 'Toyota Avanza Veloz', 'MPV', '300000', 'uploads/accessories/1731586822_Avanza-removebg-preview.png'),
+('45', 1, 'Wuling Confero', 'Wuling', '300000', 'uploads/accessories/1731591124_Wuling-removebg-preview.png');
 
 -- --------------------------------------------------------
 
@@ -134,19 +129,10 @@ CREATE TABLE `rating` (
 --
 
 INSERT INTO `rating` (`id_rating`, `id_user`, `rating_value`, `tanggal_rating`, `review`) VALUES
-(1, 0, 3, '2024-11-08', 'd'),
-(2, 0, 1, '2024-11-08', 'jelek'),
-(4, 0, 5, '2024-11-08', 'bagus sekali'),
-(5, 0, 5, '2024-11-12', 'bagus\r\n'),
-(6, 0, 4, '2024-11-13', 'dd'),
-(7, 0, 4, '2024-11-13', 'd'),
-(8, 0, 1, '2024-11-13', 'kontol banget'),
-(9, 0, 3, '2024-11-13', 'jelek'),
-(15, 0, 5, '2024-11-16', 'ddd'),
-(16, 12, 3, '2024-11-16', 'ok'),
 (17, 12, 5, '2024-11-16', 'bagus\r\n'),
 (18, 12, 5, '2024-11-16', 'bagus sekali\r\n'),
-(19, 15, 5, '2024-11-16', 'waw bagus banget\r\n');
+(21, 15, 5, '2024-11-19', 'baik'),
+(22, 15, 5, '2024-11-30', 'bagus banget\r\n');
 
 -- --------------------------------------------------------
 
@@ -200,7 +186,7 @@ ALTER TABLE `pengecekan`
 -- Indexes for table `products`
 --
 ALTER TABLE `products`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`plat_nomor`);
 
 --
 -- Indexes for table `rating`
@@ -228,25 +214,19 @@ ALTER TABLE `admin`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=70;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
 
 --
 -- AUTO_INCREMENT for table `pengecekan`
 --
 ALTER TABLE `pengecekan`
-  MODIFY `id_perawatan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `products`
---
-ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+  MODIFY `id_perawatan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `rating`
 --
 ALTER TABLE `rating`
-  MODIFY `id_rating` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id_rating` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `user_details`
