@@ -9,10 +9,10 @@ if (!isset($_SESSION['uid']) || $_SESSION['uid'] == NULL) {
 }
 
 $uid = $_SESSION['uid'];
-$fetch_orders = "SELECT *, o.id as orderid FROM products p inner join orders o on o.product_id = p.id WHERE user_id = '$uid' and status is NULL";
+$fetch_orders = "SELECT *, o.id as orderid FROM products p inner join orders o on o.plat_nomor = p.plat_nomor WHERE user_id = '$uid' and status is NULL";
 $orders = $conn->query($fetch_orders);
 
-$total_amount_query = "SELECT sum(p.product_price) as total FROM products p inner join orders o on o.product_id = p.id WHERE user_id = '$uid' and status is NULL";
+$total_amount_query = "SELECT sum(p.product_price) as total FROM products p inner join orders o on o.plat_nomor = p.plat_nomor WHERE user_id = '$uid' and status is NULL";
 $total_amount = $conn->query($total_amount_query);
 $total = 50;
 while ($row = $total_amount->fetch_assoc()) {

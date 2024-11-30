@@ -1,25 +1,32 @@
-<?php include 'header.php';
+<?php
+include 'header.php';
 if (isset($_SESSION['uid'])) {
   $uid = $_SESSION['uid'];
 }
-$fetch_orders = "SELECT p.*,o.*, o.id as orderid, 
-concat(ifnull(ud.first_name, ''),' ',ifnull(ud.last_name, '')) as user_name 
-FROM products p 
-inner join orders o on o.product_id = p.id 
-inner join user_details ud on o.user_id = ud.id
-where o.status IS NOT NULL";
+
+$fetch_orders = "SELECT p.plat_nomor, p.product_name, p.product_details, p.product_price, p.image, 
+                         o.id AS orderid, o.plat_nomor AS order_plat_nomor, o.user_id, o.address, 
+                         o.date, o.tanggal_kembali, o.lama_sewa, o.total_bayar, o.status, 
+                         concat(ifnull(ud.first_name, ''),' ',ifnull(ud.last_name, '')) AS user_name 
+                  FROM products p 
+                  INNER JOIN orders o ON o.plat_nomor = p.plat_nomor 
+                  INNER JOIN user_details ud ON o.user_id = ud.id
+                  WHERE o.status IS NOT NULL";
+
 $orders = $conn->query($fetch_orders);
 
-$total_amount_query = "SELECT sum(p.product_price) as total FROM products p inner join orders o on o.product_id = p.id";
+$total_amount_query = "SELECT sum(p.product_price) AS total FROM products p INNER JOIN orders o ON o.plat_nomor = p.plat_nomor";
 $total_amount = $conn->query($total_amount_query);
 $total = 50;
+
 while ($row = $total_amount->fetch_assoc()) {
   $total = $row['total'];
 }
+
 if (isset($_POST['statusvalue']) && isset($_POST['orderid'])) {
   $statusvalue = $_POST['statusvalue'];
   $orderid = $_POST['orderid'];
-  $updatestatus = ($statusvalue != NULL ? "update orders set status = '$statusvalue' where id = '$orderid'" : "update orders set status = NULL where id = '$orderid'");
+  $updatestatus = ($statusvalue != NULL ? "UPDATE orders SET status = '$statusvalue' WHERE id = '$orderid'" : "UPDATE orders SET status = NULL WHERE id = '$orderid'");
   $result = $conn->query($updatestatus);
   if ($result === TRUE) {
     echo 1;
@@ -31,7 +38,7 @@ if (isset($_POST['statusvalue']) && isset($_POST['orderid'])) {
 
 if (isset($_REQUEST['orderdelete'])) {
   $orderid = $_REQUEST['orderdelete'];
-  $deleteorder = "delete from orders where id = '$orderid'";
+  $deleteorder = "DELETE FROM orders WHERE id = '$orderid'";
   $result = $conn->query($deleteorder);
   if ($result === TRUE) {
     ?>
@@ -40,7 +47,7 @@ if (isset($_REQUEST['orderdelete'])) {
     </script>
     <?php
   } else {
-    echo "Something went wrong !";
+    echo "Something went wrong!";
   }
 }
 ?>
@@ -52,7 +59,7 @@ if (isset($_REQUEST['orderdelete'])) {
     $.post("", { statusvalue: statusvalue, orderid: orderid }, function (data, status) {
       // alert(data);
       if (data == 0) {
-        alert("Some issue occurred !");
+        alert("Some issue occurred!");
       } else {
         location.reload();
       }
@@ -63,7 +70,6 @@ if (isset($_REQUEST['orderdelete'])) {
 
   <!-- Page Heading -->
   <h1 class="h3 mb-2 text-gray-800" style='display: inline-block;'>Tables</h1>
-  <!-- <p class="mb-4" style='display: inline-block;'>DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official DataTables documentation</a>.</p> -->
 
   <a href='add_pet.php' class='btn btn-primary' style="float: right;">Tambah<span class='fa fa-plus'></span></a>
   <!-- DataTales Example -->
@@ -83,6 +89,7 @@ if (isset($_REQUEST['orderdelete'])) {
               <th>Harga</th>
               <th>Nama Customer</th>
               <th>Alamat</th>
+              <th>Plat Nomor</th> <!-- New column for Plat Nomor -->
               <th>Status</th>
               <th>Hapus</th>
             </tr>
@@ -94,21 +101,23 @@ if (isset($_REQUEST['orderdelete'])) {
               while ($row = $orders->fetch_assoc()) {
                 ?>
                 <tr>
-                  <td><?php echo $row['id'] ?></td>
+                  <td><?php echo $row['orderid'] ?></td>
                   <td><?php echo $row['product_name'] ?></td>
                   <td><img src="<?php echo $row['image'] ?>" style="width:100px; height:100px;" class="img-circle"></td>
                   <td><?php echo $row['lama_sewa'] ?> hari</td>
                   <td><?php echo $row['total_bayar'] ?></td>
                   <td><?php echo $row['user_name'] ?></td>
                   <td><?php echo $row['address'] ?></td>
+                  <td><?php echo $row['order_plat_nomor'] ?></td> <!-- Display Plat Nomor from Orders -->
                   <td><?php
                   $status = $row['status'];
                   if ($status == NULL) {
                     echo "In Cart";
                     ?>
                       <form method="post">
-                        <select name="order_status_<?php echo $row['id']; ?>" id="order_status_<?php echo $row['id']; ?>"
-                          onchange="updatestatus(this, '<?php echo $row['id']; ?>')" class="form-control">
+                        <select name="order_status_<?php echo $row['orderid']; ?>"
+                          id="order_status_<?php echo $row['orderid']; ?>"
+                          onchange="updatestatus(this, '<?php echo $row['orderid']; ?>')" class="form-control">
                           <option>select</option>
                           <option value="0">Sudah Bayar</option>
                           <option value="1">Mobil Diambil</option>
@@ -122,8 +131,9 @@ if (isset($_REQUEST['orderdelete'])) {
                     echo "Sudah Bayar";
                     ?>
                       <form method="post">
-                        <select name="order_status_<?php echo $row['id']; ?>" id="order_status_<?php echo $row['id']; ?>"
-                          onchange="updatestatus(this, '<?php echo $row['id']; ?>')" class="form-control">
+                        <select name="order_status_<?php echo $row['orderid']; ?>"
+                          id="order_status_<?php echo $row['orderid']; ?>"
+                          onchange="updatestatus(this, '<?php echo $row['orderid']; ?>')" class="form-control">
                           <option>select</option>
                           <option value="0">Sudah Bayar</option>
                           <option value="1">Mobil Diambil</option>
@@ -137,8 +147,9 @@ if (isset($_REQUEST['orderdelete'])) {
                     echo "Mobil Diambil";
                     ?>
                       <form method="post">
-                        <select name="order_status_<?php echo $row['id']; ?>" id="order_status_<?php echo $row['id']; ?>"
-                          onchange="updatestatus(this, '<?php echo $row['id']; ?>')" class="form-control">
+                        <select name="order_status_<?php echo $row['orderid']; ?>"
+                          id="order_status_<?php echo $row['orderid']; ?>"
+                          onchange="updatestatus(this, '<?php echo $row['orderid']; ?>')" class="form-control">
                           <option>select</option>
                           <option value="0">Sudah Bayar</option>
                           <option value="1">Mobil Diambil</option>
@@ -152,8 +163,9 @@ if (isset($_REQUEST['orderdelete'])) {
                     echo "Mobil Dikembalikan";
                     ?>
                       <form method="post">
-                        <select name="order_status_<?php echo $row['id']; ?>" id="order_status_<?php echo $row['id']; ?>"
-                          onchange="updatestatus(this, '<?php echo $row['id']; ?>')" class="form-control">
+                        <select name="order_status_<?php echo $row['orderid']; ?>"
+                          id="order_status_<?php echo $row['orderid']; ?>"
+                          onchange="updatestatus(this, '<?php echo $row['orderid']; ?>')" class="form-control">
                           <option>select</option>
                           <option value="0">Sudah Bayar</option>
                           <option value="1">Mobil Diambil</option>
@@ -167,8 +179,9 @@ if (isset($_REQUEST['orderdelete'])) {
                     echo "Dibatalkan";
                     ?>
                       <form method="post">
-                        <select name="order_status_<?php echo $row['id']; ?>" id="order_status_<?php echo $row['id']; ?>"
-                          onchange="updatestatus(this, '<?php echo $row['id']; ?>')" class="form-control">
+                        <select name="order_status_<?php echo $row['orderid']; ?>"
+                          id="order_status_<?php echo $row['orderid']; ?>"
+                          onchange="updatestatus(this, '<?php echo $row['orderid']; ?>')" class="form-control">
                           <option>select</option>
                           <option value="0">Sudah Bayar</option>
                           <option value="1">Mobil Diambil</option>
@@ -182,8 +195,9 @@ if (isset($_REQUEST['orderdelete'])) {
                     echo "Selesai";
                     ?>
                       <form method="post">
-                        <select name="order_status_<?php echo $row['id']; ?>" id="order_status_<?php echo $row['id']; ?>"
-                          onchange="updatestatus(this, '<?php echo $row['id']; ?>')" class="form-control">
+                        <select name="order_status_<?php echo $row['orderid']; ?>"
+                          id="order_status_<?php echo $row['orderid']; ?>"
+                          onchange="updatestatus(this, '<?php echo $row['orderid']; ?>')" class="form-control">
                           <option>select</option>
                           <option value="0">Sudah Bayar</option>
                           <option value="1">Mobil Diambil</option>
@@ -193,15 +207,15 @@ if (isset($_REQUEST['orderdelete'])) {
                         </select>
                       </form>
                       <?php
-                  } ?>
+                  }
+                  ?>
                   </td>
-                  <td><a class='btn btn-danger' href="orders.php?orderdelete=<?php echo $row['id']; ?>"><span
-                        class="fa fa-trash"></span></a></td>
+                  <td>
+                    <a href="orders.php?orderdelete=<?php echo $row['orderid']; ?>" class="btn btn-danger">Hapus</a>
+                  </td>
                 </tr>
                 <?php
               }
-            } else {
-              echo "0 results";
             }
             ?>
           </tbody>
@@ -209,65 +223,6 @@ if (isset($_REQUEST['orderdelete'])) {
       </div>
     </div>
   </div>
-
 </div>
 <!-- /.container-fluid -->
-
-</div>
-<!-- End of Main Content -->
-
-<!-- Footer -->
-
-<!-- End of Footer -->
-
-</div>
-<!-- End of Content Wrapper -->
-
-</div>
-<!-- End of Page Wrapper -->
-
-<!-- Scroll to Top Button-->
-<a class="scroll-to-top rounded" href="#page-top">
-  <i class="fas fa-angle-up"></i>
-</a>
-
-<!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-        <a class="btn btn-primary" href="login.php">Logout</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Bootstrap core JavaScript-->
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-<!-- Core plugin JavaScript-->
-<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-<!-- Custom scripts for all pages-->
-<script src="js/sb-admin-2.min.js"></script>
-
-<!-- Page level plugins -->
-<script src="vendor/datatables/jquery.dataTables.min.js"></script>
-<script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-<!-- Page level custom scripts -->
-<script src="js/demo/datatables-demo.js"></script>
-
-</body>
-
-</html>
+<?php include 'footer.php'; ?>

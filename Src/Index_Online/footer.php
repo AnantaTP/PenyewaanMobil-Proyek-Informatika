@@ -34,7 +34,6 @@
                     <div class="footer-widget">
                         <h5>Akun</h5>
                         <ul>
-                            <li><a href="orders.php">Akun Saya</a></li>
                             <li><a href="shopping-cart.php">Keranjang Belanja</a></li>
                             <li><a href="shop.php">Belanja</a></li>
                         </ul>
