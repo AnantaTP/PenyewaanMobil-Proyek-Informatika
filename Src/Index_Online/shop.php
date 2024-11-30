@@ -64,8 +64,8 @@ $result = $conn->query($fetch_product);
                                         <img src="<?php echo htmlspecialchars('admin/'.$row['image']) ?>" alt="">
                                         <div class="icon"></div>
                                         <ul>
-                                            <li class="w-icon active"><button onclick="addtocart('<?php echo $row['id'];?>');"><i class="icon_bag_alt"></i></button></li>
-                                            <li class="quick-view"><a href="#" data-toggle="modal" data-target=".bd-example-modal-lg-<?php echo $row['id']; ?>">+ Deskripsi</a></li>
+                                            <li class="w-icon active"><button onclick="addtocart('<?php echo $row['plat_nomor'];?>');"><i class="icon_bag_alt"></i></button></li>
+                                            <li class="quick-view"><a href="#" data-toggle="modal" data-target=".bd-example-modal-lg-<?php echo $row['plat_nomor']; ?>">+ Deskripsi</a></li>
                                         </ul>
                                     </div>
                                     <div class="pi-text">

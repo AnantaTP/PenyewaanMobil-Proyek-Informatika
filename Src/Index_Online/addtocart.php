@@ -7,7 +7,7 @@ if(isset($_POST['addtocart']) && $_POST['addtocart'] == 1){
     }
     $pid = $_POST['pid'];
     $uid = $_SESSION['uid'];
-    $addtocart_query = "insert into orders(product_id, user_id) values('$pid', '$uid')";
+    $addtocart_query = "insert into orders(plat_nomor, user_id) values('$pid', '$uid')";
     $result = $conn->query($addtocart_query);
     if($result === FALSE){
         echo "Something went wrong!";
