@@ -224,5 +224,3 @@ if (isset($_REQUEST['orderdelete'])) {
     </div>
   </div>
 </div>
-<!-- /.container-fluid -->
-<?php include 'footer.php'; ?>
