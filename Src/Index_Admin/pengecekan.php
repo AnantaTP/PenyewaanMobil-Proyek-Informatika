@@ -59,13 +59,9 @@ if (isset($_POST['add_maintenance'])) {
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>ID Perawatan</th>
                             <th>Plat Nomor</th>
                             <th>Nama Mobil</th>
-                            <th>Tanggal Perawatan</th>
-                            <th>Perawatan Mesin</th>
-                            <th>Perawatan Ban</th>
-                            <th>Perawatan Oli</th>
+                            <th>Aksi</th> <!-- Kolom aksi baru -->
                         </tr>
                     </thead>
                     <tbody>
@@ -74,18 +70,17 @@ if (isset($_POST['add_maintenance'])) {
                             while ($row = $maintenance->fetch_assoc()) {
                                 ?>
                                 <tr>
-                                    <td><?php echo $row['id_perawatan']; ?></td>
                                     <td><?php echo $row['plat_nomor']; ?></td>
                                     <td><?php echo $row['product_name']; ?></td>
-                                    <td><?php echo $row['tanggal_perawatan']; ?></td>
-                                    <td><?php echo $row['perawatan_mesin']; ?></td>
-                                    <td><?php echo $row['perawatan_ban']; ?></td>
-                                    <td><?php echo $row['perawatan_oli']; ?></td>
+                                    <td>
+                                        <a href="rekapan_perawatan.php?plat_nomor=<?php echo $row['plat_nomor']; ?>"
+                                            class="btn btn-primary btn-sm">Lihat Rekapan</a>
+                                    </td>
                                 </tr>
                                 <?php
                             }
                         } else {
-                            echo "<tr><td colspan='7'>Tidak ada data perawatan ditemukan.</td></tr>";
+                            echo "<tr><td colspan='3'>Tidak ada data perawatan ditemukan.</td></tr>";
                         }
                         ?>
                     </tbody>
