@@ -164,10 +164,9 @@ if (!isset($_SESSION['uid']) || $_SESSION['uid'] == NULL) {
                                             <!-- Disable the checkout button if the cart is empty -->
                                             <?php if ($is_cart_empty): ?>
                                                 <a href="#" class="primary-btn checkout-btn"
-                                                    onclick="alert('Keranjang Anda kosong. Tambahkan produk untuk melanjutkan ke pembayaran.'); return false;">CHECK
-                                                    OUT</a>
+                                                    onclick="alert('Keranjang Anda kosong. Tambahkan produk untuk melanjutkan ke pembayaran.'); return false;">Pesan</a>
                                             <?php else: ?>
-                                                <a href="check-out.php" class="primary-btn checkout-btn">CHECK OUT</a>
+                                                <a href="check-out.php" class="primary-btn checkout-btn">Pesan</a>
                                             <?php endif; ?>
                                         </div>
                                     </div>

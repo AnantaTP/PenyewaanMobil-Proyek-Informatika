@@ -5,19 +5,16 @@ include 'header.php'; // Termasuk header dan koneksi database
 $fetch_products = "SELECT plat_nomor, product_name FROM products";
 $products = $conn->query($fetch_products);
 
-// Mengambil data perawatan dari tabel pengecekan dengan JOIN
+// Mengambil data perawatan dari tabel pengecekan dengan JOIN, memastikan tidak ada duplikasi
 $fetch_maintenance = "
     SELECT 
-        pengecekan.id_perawatan, 
         pengecekan.plat_nomor, 
         products.product_name, 
-        pengecekan.tanggal_perawatan, 
-        pengecekan.perawatan_mesin, 
-        pengecekan.perawatan_ban, 
-        pengecekan.perawatan_oli
+        MAX(pengecekan.tanggal_perawatan) AS tanggal_terakhir
     FROM pengecekan
     JOIN products ON pengecekan.plat_nomor = products.plat_nomor
-    ORDER BY pengecekan.tanggal_perawatan DESC
+    GROUP BY pengecekan.plat_nomor, products.product_name
+    ORDER BY tanggal_terakhir DESC
 ";
 $maintenance = $conn->query($fetch_maintenance);
 
@@ -52,7 +49,7 @@ if (isset($_POST['add_maintenance'])) {
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Laporan Perawatan Mobil</h6>
+            <h6 class="m-0 font-weight-bold text-success">Laporan Perawatan Mobil</h6>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -74,7 +71,7 @@ if (isset($_POST['add_maintenance'])) {
                                     <td><?php echo $row['product_name']; ?></td>
                                     <td>
                                         <a href="rekapan_perawatan.php?plat_nomor=<?php echo $row['plat_nomor']; ?>"
-                                            class="btn btn-primary btn-sm">Lihat Rekapan</a>
+                                            class="btn btn-success btn-sm">Lihat Rekapan</a>
                                     </td>
                                 </tr>
                                 <?php
@@ -92,7 +89,7 @@ if (isset($_POST['add_maintenance'])) {
     <!-- Formulir untuk Menambah Perawatan Mobil Baru -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Tambah Perawatan Mobil Baru</h6>
+            <h6 class="m-0 font-weight-bold text-success">Tambah Perawatan Mobil Baru</h6>
         </div>
         <div class="card-body">
             <form method="POST" action="pengecekan.php">

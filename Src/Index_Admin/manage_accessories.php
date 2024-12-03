@@ -165,7 +165,7 @@ if(isset($_REQUEST['deleteid']) && $_REQUEST['deleteid'] != NULL) {
               <?php
             }
             ?>
-            <button type="submit" class="btn btn-primary" name='addaccessory'>Kirim</button>
+            <button type="submit" class="btn btn-secondary" name='addaccessory'>Kirim</button>
         </form>
 
         </div>

@@ -71,11 +71,11 @@ if (isset($_REQUEST['orderdelete'])) {
   <!-- Page Heading -->
   <h1 class="h3 mb-2 text-gray-800" style='display: inline-block;'>Tables</h1>
 
-  <a href='add_pet.php' class='btn btn-primary' style="float: right;">Tambah<span class='fa fa-plus'></span></a>
+  <a href='add_pet.php' class='btn btn-success' style="float: right;">Tambah <span class='fa fa-plus'></span></a>
   <!-- DataTales Example -->
   <div class="card shadow mb-4">
     <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary">Pesanan</h6>
+      <h6 class="m-0 font-weight-bold text-success">Pesanan</h6>
     </div>
     <div class="card-body">
       <div class="table-responsive">
