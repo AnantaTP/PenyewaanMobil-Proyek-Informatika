@@ -12,12 +12,12 @@ $result = $conn->query($fetch_data);
   <!-- Page Heading -->
   <h1 class="h3 mb-2 text-gray-800" style='display: inline-block;'>Tables</h1>
 
-  <a href='add_pet.php' class='btn btn-primary' style="float: right;">Tambah <span class='fa fa-plus'></span></a>
+  <a href='add_pet.php' class='btn btn-success' style="float: right;">Tambah <span class='fa fa-plus'></span></a>
 
   <!-- DataTales Example -->
   <div class="card shadow mb-4">
     <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary">Daftar Mobil LCGC</h6>
+      <h6 class="m-0 font-weight-bold text-success">Daftar Mobil LCGC</h6>
     </div>
     <div class="card-body">
       <div class="table-responsive">
@@ -45,11 +45,11 @@ $result = $conn->query($fetch_data);
                   <td><img src="<?php echo $row['image']; ?>" style="width:100px; height:100px;" class="img-circle"></td>
                   <td><?php echo $row['product_details']; ?></td>
                   <td><?php echo $row['product_price']; ?></td>
-                  <td><a class='btn btn-primary' href="add_pet.php?editid=<?php echo $row['plat_nomor']; ?>"><span
+                  <td><a class='btn btn-success' href="add_pet.php?editid=<?php echo $row['plat_nomor']; ?>"><span
                         class="fa fa-pen"></span></a></td>
                   <td><a class='btn btn-danger' href="add_pet.php?deleteid=<?php echo $row['plat_nomor']; ?>"><span
                         class="fa fa-trash"></span></a></td>
-                </tr>
+                </tr> 
                 <?php
               }
             } else {

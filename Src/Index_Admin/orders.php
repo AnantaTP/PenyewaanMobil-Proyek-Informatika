@@ -108,7 +108,7 @@ if (isset($_REQUEST['orderdelete'])) {
                   <td><?php echo $row['total_bayar'] ?></td>
                   <td><?php echo $row['user_name'] ?></td>
                   <td><?php echo $row['address'] ?></td>
-                  <td><?php echo $row['order_plat_nomor'] ?></td> <!-- Display Plat Nomor from Orders -->
+                  <td><?php echo $row['plat_nomor'] ?></td> <!-- Display Plat Nomor from Orders -->
                   <td><?php
                   $status = $row['status'];
                   if ($status == NULL) {

@@ -1,8 +1,8 @@
-<?php include 'config.php' ;
-if(!isset($_SESSION['admin']) || $_SESSION['admin'] == NULL){
+<?php include 'config.php';
+if (!isset($_SESSION['admin']) || $_SESSION['admin'] == NULL) {
   ?>
   <script>
-  window.location = "login.php";
+    window.location = "login.php";
   </script>
   <?php
 }
@@ -22,7 +22,9 @@ if(!isset($_SESSION['admin']) || $_SESSION['admin'] == NULL){
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet">
 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
@@ -35,15 +37,16 @@ if(!isset($_SESSION['admin']) || $_SESSION['admin'] == NULL){
   <div id="wrapper">
 
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
-        <div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-laugh-wink"></i>
+        <div class="sidebar-brand-icon">
+          <img src="img/logooo.png" alt="Logo" style="width: 100px; height: auto;">
         </div>
         <div class="sidebar-brand-text mx-3">Sida CAR</div>
       </a>
+
 
       <!-- Divider -->
       <hr class="sidebar-divider my-0">
@@ -207,13 +210,13 @@ if(!isset($_SESSION['admin']) || $_SESSION['admin'] == NULL){
           <!-- Topbar Navbar -->
           <!-- <ul class="navbar-nav ml-auto"> -->
 
-            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-            <!-- <li class="nav-item dropdown no-arrow d-sm-none">
+          <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+          <!-- <li class="nav-item dropdown no-arrow d-sm-none">
               <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-search fa-fw"></i>
               </a> -->
-              <!-- Dropdown - Messages -->
-              <!-- <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
+          <!-- Dropdown - Messages -->
+          <!-- <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
                 <form class="form-inline mr-auto w-100 navbar-search">
                   <div class="input-group">
                     <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
@@ -227,15 +230,15 @@ if(!isset($_SESSION['admin']) || $_SESSION['admin'] == NULL){
               </div>
             </li> -->
 
-            <!-- Nav Item - Alerts -->
-            <!-- <li class="nav-item dropdown no-arrow mx-1">
+          <!-- Nav Item - Alerts -->
+          <!-- <li class="nav-item dropdown no-arrow mx-1">
               <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bell fa-fw"></i> -->
-                <!-- Counter - Alerts -->
-                <!-- <span class="badge badge-danger badge-counter">3+</span>
+          <!-- Counter - Alerts -->
+          <!-- <span class="badge badge-danger badge-counter">3+</span>
               </a> -->
-              <!-- Dropdown - Alerts -->
-              <!-- <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+          <!-- Dropdown - Alerts -->
+          <!-- <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
                 <h6 class="dropdown-header">
                   Alerts Center
                 </h6>
@@ -276,15 +279,15 @@ if(!isset($_SESSION['admin']) || $_SESSION['admin'] == NULL){
               </div>
             </li> -->
 
-            <!-- Nav Item - Messages -->
-            <!-- <li class="nav-item dropdown no-arrow mx-1">
+          <!-- Nav Item - Messages -->
+          <!-- <li class="nav-item dropdown no-arrow mx-1">
               <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-envelope fa-fw"></i> -->
-                <!-- Counter - Messages -->
-                <!-- <span class="badge badge-danger badge-counter">7</span>
+          <!-- Counter - Messages -->
+          <!-- <span class="badge badge-danger badge-counter">7</span>
               </a> -->
-              <!-- Dropdown - Messages -->
-              <!-- <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
+          <!-- Dropdown - Messages -->
+          <!-- <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="messagesDropdown">
                 <h6 class="dropdown-header">
                   Message Center
                 </h6>
@@ -334,14 +337,14 @@ if(!isset($_SESSION['admin']) || $_SESSION['admin'] == NULL){
 
             <div class="topbar-divider d-none d-sm-block"></div> -->
 
-            <!-- Nav Item - User Information -->
-            <!-- <li class="nav-item dropdown no-arrow">
+          <!-- Nav Item - User Information -->
+          <!-- <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">Valerie Luna</span>
                 <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
               </a> -->
-              <!-- Dropdown - User Information -->
-              <!-- <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+          <!-- Dropdown - User Information -->
+          <!-- <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
                 <a class="dropdown-item" href="#">
                   <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                   Profile

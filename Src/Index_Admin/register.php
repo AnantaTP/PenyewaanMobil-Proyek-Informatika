@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
 </head>
 
-<body class="bg-gradient-primary">
+<body class="bg-gradient-success">
     <div class="container">
         <div class="card o-hidden border-0 shadow-lg my-5">
             <div class="card-body p-0">
@@ -114,7 +114,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <div class="form-group">
                                     <input type="file" class="form-control" name="image" accept="image/*" required>
                                 </div>
-                                <button type="submit" class="btn btn-primary btn-user btn-block">Register Admin Account</button>
+                                <button type="submit" class="btn btn-success btn-user btn-block">Register Admin Account</button>
                             </form>
 
                             <hr>
