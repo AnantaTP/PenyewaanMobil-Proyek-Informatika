@@ -15,40 +15,33 @@ $fetch_orders = "SELECT p.plat_nomor, p.product_name, p.product_details, p.produ
 
 $orders = $conn->query($fetch_orders);
 
-$total_amount_query = "SELECT sum(p.product_price) AS total FROM products p INNER JOIN orders o ON o.plat_nomor = p.plat_nomor";
-$total_amount = $conn->query($total_amount_query);
-$total = 50;
-
-while ($row = $total_amount->fetch_assoc()) {
-  $total = $row['total'];
-}
-
+// Update status based on admin selection
 if (isset($_POST['statusvalue']) && isset($_POST['orderid'])) {
-  $statusvalue = $_POST['statusvalue'];
-  $orderid = $_POST['orderid'];
-  $updatestatus = ($statusvalue != NULL ? "UPDATE orders SET status = '$statusvalue' WHERE id = '$orderid'" : "UPDATE orders SET status = NULL WHERE id = '$orderid'");
-  $result = $conn->query($updatestatus);
-  if ($result === TRUE) {
-    echo 1;
-  } else {
-    echo 0;
-  }
-  exit;
+    $statusvalue = $_POST['statusvalue'];
+    $orderid = $_POST['orderid'];
+    $updatestatus = "UPDATE orders SET status = '$statusvalue' WHERE id = '$orderid'";
+    $result = $conn->query($updatestatus);
+    if ($result === TRUE) {
+        echo 1;
+    } else {
+        echo 0;
+    }
+    exit;
 }
 
 if (isset($_REQUEST['orderdelete'])) {
-  $orderid = $_REQUEST['orderdelete'];
-  $deleteorder = "DELETE FROM orders WHERE id = '$orderid'";
-  $result = $conn->query($deleteorder);
-  if ($result === TRUE) {
-    ?>
-    <script>
-      window.location = "orders.php";
-    </script>
-    <?php
-  } else {
-    echo "Something went wrong!";
-  }
+    $orderid = $_REQUEST['orderdelete'];
+    $deleteorder = "DELETE FROM orders WHERE id = '$orderid'";
+    $result = $conn->query($deleteorder);
+    if ($result === TRUE) {
+        ?>
+        <script>
+          window.location = "orders.php";
+        </script>
+        <?php
+    } else {
+        echo "Something went wrong!";
+    }
 }
 ?>
 
@@ -57,7 +50,6 @@ if (isset($_REQUEST['orderdelete'])) {
   function updatestatus(ref_obj, orderid) {
     statusvalue = ref_obj.value;
     $.post("", { statusvalue: statusvalue, orderid: orderid }, function (data, status) {
-      // alert(data);
       if (data == 0) {
         alert("Some issue occurred!");
       } else {
@@ -71,7 +63,6 @@ if (isset($_REQUEST['orderdelete'])) {
   <!-- Page Heading -->
   <h1 class="h3 mb-2 text-gray-800" style='display: inline-block;'>Tables</h1>
 
-  <a href='add_pet.php' class='btn btn-success' style="float: right;">Tambah <span class='fa fa-plus'></span></a>
   <!-- DataTales Example -->
   <div class="card shadow mb-4">
     <div class="card-header py-3">
@@ -109,106 +100,41 @@ if (isset($_REQUEST['orderdelete'])) {
                   <td><?php echo $row['user_name'] ?></td>
                   <td><?php echo $row['address'] ?></td>
                   <td><?php echo $row['plat_nomor'] ?></td> <!-- Display Plat Nomor from Orders -->
-                  <td><?php
-                  $status = $row['status'];
-                  if ($status == NULL) {
-                    echo "In Cart";
+                  <td>
+                    <?php
+                    $status = $row['status'];
+                    switch ($status) {
+                      case NULL:
+                        echo "In Cart";
+                        break;
+                      case 0:
+                        echo "Sudah Bayar";
+                        break;
+                      case 1:
+                        echo "Mobil Diambil";
+                        break;
+                      case 2:
+                        echo "Mobil Dikembalikan";
+                        break;
+                      case 3:
+                        echo "Dibatalkan";
+                        break;
+                      case 4:
+                        echo "Selesai";
+                        break;
+                    }
                     ?>
-                      <form method="post">
-                        <select name="order_status_<?php echo $row['orderid']; ?>"
-                          id="order_status_<?php echo $row['orderid']; ?>"
-                          onchange="updatestatus(this, '<?php echo $row['orderid']; ?>')" class="form-control">
-                          <option>select</option>
-                          <option value="0">Sudah Bayar</option>
-                          <option value="1">Mobil Diambil</option>
-                          <option value="2">Mobil Dikembalikan</option>
-                          <option value="3">Dibatalkan</option>
-                          <option value="4">Selesai</option>
-                        </select>
-                      </form>
-                      <?php
-                  } elseif ($status == 0) {
-                    echo "Sudah Bayar";
-                    ?>
-                      <form method="post">
-                        <select name="order_status_<?php echo $row['orderid']; ?>"
-                          id="order_status_<?php echo $row['orderid']; ?>"
-                          onchange="updatestatus(this, '<?php echo $row['orderid']; ?>')" class="form-control">
-                          <option>select</option>
-                          <option value="0">Sudah Bayar</option>
-                          <option value="1">Mobil Diambil</option>
-                          <option value="2">Mobil Dikembalikan</option>
-                          <option value="3">Dibatalkan</option>
-                          <option value="4">Selesai</option>
-                        </select>
-                      </form>
-                      <?php
-                  } elseif ($status == 1) {
-                    echo "Mobil Diambil";
-                    ?>
-                      <form method="post">
-                        <select name="order_status_<?php echo $row['orderid']; ?>"
-                          id="order_status_<?php echo $row['orderid']; ?>"
-                          onchange="updatestatus(this, '<?php echo $row['orderid']; ?>')" class="form-control">
-                          <option>select</option>
-                          <option value="0">Sudah Bayar</option>
-                          <option value="1">Mobil Diambil</option>
-                          <option value="2">Mobil Dikembalikan</option>
-                          <option value="3">Dibatalkan</option>
-                          <option value="4">Selesai</option>
-                        </select>
-                      </form>
-                      <?php
-                  } elseif ($status == 2) {
-                    echo "Mobil Dikembalikan";
-                    ?>
-                      <form method="post">
-                        <select name="order_status_<?php echo $row['orderid']; ?>"
-                          id="order_status_<?php echo $row['orderid']; ?>"
-                          onchange="updatestatus(this, '<?php echo $row['orderid']; ?>')" class="form-control">
-                          <option>select</option>
-                          <option value="0">Sudah Bayar</option>
-                          <option value="1">Mobil Diambil</option>
-                          <option value="2">Mobil Dikembalikan</option>
-                          <option value="3">Dibatalkan</option>
-                          <option value="4">Selesai</option>
-                        </select>
-                      </form>
-                      <?php
-                  } elseif ($status == 3) {
-                    echo "Dibatalkan";
-                    ?>
-                      <form method="post">
-                        <select name="order_status_<?php echo $row['orderid']; ?>"
-                          id="order_status_<?php echo $row['orderid']; ?>"
-                          onchange="updatestatus(this, '<?php echo $row['orderid']; ?>')" class="form-control">
-                          <option>select</option>
-                          <option value="0">Sudah Bayar</option>
-                          <option value="1">Mobil Diambil</option>
-                          <option value="2">Mobil Dikembalikan</option>
-                          <option value="3">Dibatalkan</option>
-                          <option value="4">Selesai</option>
-                        </select>
-                      </form>
-                      <?php
-                  } elseif ($status == 4) {
-                    echo "Selesai";
-                    ?>
-                      <form method="post">
-                        <select name="order_status_<?php echo $row['orderid']; ?>"
-                          id="order_status_<?php echo $row['orderid']; ?>"
-                          onchange="updatestatus(this, '<?php echo $row['orderid']; ?>')" class="form-control">
-                          <option>select</option>
-                          <option value="0">Sudah Bayar</option>
-                          <option value="1">Mobil Diambil</option>
-                          <option value="2">Mobil Dikembalikan</option>
-                          <option value="3">Dibatalkan</option>
-                          <option value="4">Selesai</option>
-                        </select>
-                      </form>
-                      <?php
-                  }
-                  ?>
+                    <form method="post">
+                      <select name="statusvalue" 
+                              onchange="updatestatus(this, '<?php echo $row['orderid']; ?>')" 
+                              class="form-control">
+                        <option value="0" <?php echo ($status == 0) ? 'selected' : ''; ?>>Sudah Bayar</option>
+                        <option value="1" <?php echo ($status == 1) ? 'selected' : ''; ?>>Mobil Diambil</option>
+                        <option value="2" <?php echo ($status == 2) ? 'selected' : ''; ?>>Mobil Dikembalikan</option>
+                        <option value="3" <?php echo ($status == 3) ? 'selected' : ''; ?>>Dibatalkan</option>
+                        <option value="4" <?php echo ($status == 4) ? 'selected' : ''; ?>>Selesai</option>
+                      </select>
+                    </form>
                   </td>
                   <td>
                     <a href="orders.php?orderdelete=<?php echo $row['orderid']; ?>" class="btn btn-danger">Hapus</a>

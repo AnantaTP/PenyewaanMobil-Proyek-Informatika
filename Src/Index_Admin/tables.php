@@ -1,20 +1,29 @@
 <?php
 include 'header.php';
 
+// Cek apakah status sudah disimpan di session
+if (!isset($_SESSION['status_simulasi'])) {
+    $_SESSION['status_simulasi'] = [];
+}
+
 // Mengambil data dari tabel products dengan filter type = 0 (LCGC)
 $fetch_data = "SELECT plat_nomor, product_name, image, product_details, product_price FROM products WHERE type = 0";
 $result = $conn->query($fetch_data);
+
+// Proses perubahan status kendaraan
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['plat_nomor'], $_POST['status'])) {
+    $plat_nomor = $_POST['plat_nomor'];
+    $status = $_POST['status'];
+
+    // Simpan status di session
+    $_SESSION['status_simulasi'][$plat_nomor] = $status;
+}
 ?>
 
-<!-- Begin Page Content -->
 <div class="container-fluid">
-
-  <!-- Page Heading -->
   <h1 class="h3 mb-2 text-gray-800" style='display: inline-block;'>Tables</h1>
-
   <a href='add_pet.php' class='btn btn-success' style="float: right;">Tambah <span class='fa fa-plus'></span></a>
 
-  <!-- DataTales Example -->
   <div class="card shadow mb-4">
     <div class="card-header py-3">
       <h6 class="m-0 font-weight-bold text-success">Daftar Mobil LCGC</h6>
@@ -29,6 +38,7 @@ $result = $conn->query($fetch_data);
               <th>Gambar</th>
               <th>Deskripsi</th>
               <th>Harga</th>
+              <th>Status</th>
               <th>Edit</th>
               <th>Hapus</th>
             </tr>
@@ -36,24 +46,32 @@ $result = $conn->query($fetch_data);
           <tbody>
             <?php
             if ($result->num_rows > 0) {
-              // Output setiap baris data
               while ($row = $result->fetch_assoc()) {
+                // Ambil status kendaraan dari session, jika ada
+                $current_status = isset($_SESSION['status_simulasi'][$row['plat_nomor']]) ? $_SESSION['status_simulasi'][$row['plat_nomor']] : 'Available';
                 ?>
-                <tr>
+                <tr class="<?php echo ($current_status == 'Not Available') ? 'text-muted' : ''; ?>">
                   <td><?php echo $row['plat_nomor']; ?></td>
                   <td><?php echo $row['product_name']; ?></td>
                   <td><img src="<?php echo $row['image']; ?>" style="width:100px; height:100px;" class="img-circle"></td>
                   <td><?php echo $row['product_details']; ?></td>
                   <td><?php echo $row['product_price']; ?></td>
-                  <td><a class='btn btn-success' href="add_pet.php?editid=<?php echo $row['plat_nomor']; ?>"><span
-                        class="fa fa-pen"></span></a></td>
-                  <td><a class='btn btn-danger' href="add_pet.php?deleteid=<?php echo $row['plat_nomor']; ?>"><span
-                        class="fa fa-trash"></span></a></td>
-                </tr> 
+                  <td>
+                    <form method="POST" action="">
+                      <input type="hidden" name="plat_nomor" value="<?php echo $row['plat_nomor']; ?>">
+                      <select name="status" class="form-control" onchange="this.form.submit()">
+                        <option value="Available" <?php echo $current_status == 'Available' ? 'selected' : ''; ?>>Available</option>
+                        <option value="Not Available" <?php echo $current_status == 'Not Available' ? 'selected' : ''; ?>>Not Available</option>
+                      </select>
+                    </form>
+                  </td>
+                  <td><a class='btn btn-success' href="add_pet.php?editid=<?php echo $row['plat_nomor']; ?>"><span class="fa fa-pen"></span></a></td>
+                  <td><a class='btn btn-danger' href="add_pet.php?deleteid=<?php echo $row['plat_nomor']; ?>"><span class="fa fa-trash"></span></a></td>
+                </tr>
                 <?php
               }
             } else {
-              echo "<tr><td colspan='7'>Tidak ada data ditemukan.</td></tr>";
+              echo "<tr><td colspan='8'>Tidak ada data ditemukan.</td></tr>";
             }
             ?>
           </tbody>
@@ -61,65 +79,4 @@ $result = $conn->query($fetch_data);
       </div>
     </div>
   </div>
-
 </div>
-<!-- /.container-fluid -->
-
-</div>
-<!-- End of Main Content -->
-
-<!-- Footer -->
-
-<!-- End of Footer -->
-
-</div>
-<!-- End of Content Wrapper -->
-
-</div>
-<!-- End of Page Wrapper -->
-
-<!-- Scroll to Top Button-->
-<a class="scroll-to-top rounded" href="#page-top">
-  <i class="fas fa-angle-up"></i>
-</a>
-
-<!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div class="modal-body">Pilih "Logout" di bawah jika Anda ingin mengakhiri sesi ini.</div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" type="button" data-dismiss="modal">Batal</button>
-        <a class="btn btn-primary" href="login.php">Logout</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Bootstrap core JavaScript-->
-<script src="vendor/jquery/jquery.min.js"></script>
-<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-<!-- Core plugin JavaScript-->
-<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
-
-<!-- Custom scripts for all pages-->
-<script src="js/sb-admin-2.min.js"></script>
-
-<!-- Page level plugins -->
-<script src="vendor/datatables/jquery.dataTables.min.js"></script>
-<script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-<!-- Page level custom scripts -->
-<script src="js/demo/datatables-demo.js"></script>
-
-</body>
-
-</html>

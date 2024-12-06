@@ -1,0 +1,6 @@
+.plat-nomor {
+    font-size: 14px;
+    color: #e82a2a;
+    font-weight: bold;
+    text-decoration: underline;
+}
