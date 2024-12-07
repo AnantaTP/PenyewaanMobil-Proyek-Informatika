@@ -1,6 +1,11 @@
 <?php
 include 'header.php';
 
+// Ambil status dari session
+if (!isset($_SESSION['status_simulasi'])) {
+    $_SESSION['status_simulasi'] = [];
+}
+
 if (isset($_REQUEST['cat'])) {
     $category = $_REQUEST['cat'];
 } else {
@@ -56,18 +61,24 @@ function addtocart(pid) {
                     <div class="row">
                         <?php
                         while ($row = $result->fetch_assoc()) {
+                            $plat_nomor = $row['plat_nomor'];
+                            $current_status = isset($_SESSION['status_simulasi'][$plat_nomor]) ? $_SESSION['status_simulasi'][$plat_nomor] : 'Available';
+
+                            // Kondisi warna dan tombol keranjang berdasarkan status
+                            $is_available = ($current_status === 'Available');
+                            $gray_class = $is_available ? '' : 'gray-out';
+                            $button_html = $is_available ? 
+                                "<button onclick=\"addtocart('$plat_nomor');\"><i class=\"icon_bag_alt\"></i></button>" : 
+                                "";
                             ?>
-                        <div class="col-lg-4 col-sm-6">
+                        <div class="col-lg-4 col-sm-6 <?php echo $gray_class; ?>">
                             <div class="product-item">
                                 <div class="pi-pic">
-                                    <!-- Tambahkan path ke gambar menggunakan htmlspecialchars() untuk mencegah XSS -->
                                     <img src="<?php echo htmlspecialchars('admin/' . $row['image']) ?>" alt="">
                                     <div class="icon"></div>
                                     <ul>
                                         <li class="w-icon active">
-                                            <button onclick="addtocart('<?php echo $row['plat_nomor']; ?>');">
-                                                <i class="icon_bag_alt"></i>
-                                            </button>
+                                            <?php echo $button_html; ?>
                                         </li>
                                     </ul>
                                 </div>
@@ -114,6 +125,17 @@ function addtocart(pid) {
         </div>
     </div>
 </section>
+
+<style>
+/* Tambahkan style untuk kendaraan yang tidak tersedia */
+.gray-out {
+    filter: grayscale(100%);
+    pointer-events: none; /* Nonaktifkan interaksi dengan elemen */
+}
+.gray-out .product-item {
+    opacity: 0.5;
+}
+</style>
 
 <?php
 include 'footer.php';
