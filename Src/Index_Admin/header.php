@@ -164,11 +164,6 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] == NULL) {
           <i class="fas fa-fw fa-table"></i>
           <span>Rating Pelanggan</span></a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="laporan_keuangan.php">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Laporan Keuangan</span></a>
-      </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
