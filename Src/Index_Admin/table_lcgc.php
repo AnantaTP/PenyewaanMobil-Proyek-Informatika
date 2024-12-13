@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['plat_nomor'], $_POST[
 
 <div class="container-fluid">
   <h1 class="h3 mb-2 text-gray-800" style='display: inline-block;'>Tables</h1>
-  <a href='add_pet.php' class='btn btn-success' style="float: right;">Tambah <span class='fa fa-plus'></span></a>
+  <a href='add_lcgc.php' class='btn btn-success' style="float: right;">Tambah <span class='fa fa-plus'></span></a>
 
   <div class="card shadow mb-4">
     <div class="card-header py-3">
@@ -65,8 +65,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['plat_nomor'], $_POST[
                       </select>
                     </form>
                   </td>
-                  <td><a class='btn btn-success' href="add_pet.php?editid=<?php echo $row['plat_nomor']; ?>"><span class="fa fa-pen"></span></a></td>
-                  <td><a class='btn btn-danger' href="add_pet.php?deleteid=<?php echo $row['plat_nomor']; ?>"><span class="fa fa-trash"></span></a></td>
+                  <td><a class='btn btn-success' href="add_lcgc.php?editid=<?php echo $row['plat_nomor']; ?>"><span class="fa fa-pen"></span></a></td>
+                  <td><a class='btn btn-danger' href="add_lcgc.php?deleteid=<?php echo $row['plat_nomor']; ?>"><span class="fa fa-trash"></span></a></td>
                 </tr>
                 <?php
               }

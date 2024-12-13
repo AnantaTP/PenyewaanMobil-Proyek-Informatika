@@ -135,12 +135,12 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] == NULL) {
 
       <!-- Nav Item - Tables -->
       <li class="nav-item">
-        <a class="nav-link" href="tables.php">
+        <a class="nav-link" href="table_lcgc.php">
           <i class="fas fa-fw fa-table"></i>
           <span>LCGC</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="accessories.php">
+        <a class="nav-link" href="table_mpv.php">
           <i class="fas fa-fw fa-table"></i>
           <span></span>MPV</a>
       </li>

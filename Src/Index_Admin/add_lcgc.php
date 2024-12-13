@@ -9,12 +9,12 @@ if (isset($_POST['addpet'])) {
 
   if (isset($_POST['edit_pet'])) {
     $edit_plat = $_POST['edit_pet'];
-    $update_pet = "UPDATE products SET plat_nomor = '$plat_nomor', product_name = '$pet_name', product_details = '$pet_desc', product_price = '$pet_price' WHERE plat_nomor = '$edit_plat'";
+    $update_pet = "UPDATE products SET plat_nomor = '$plat_nomor', type = 0, product_name = '$pet_name', product_details = '$pet_desc', product_price = '$pet_price' WHERE plat_nomor = '$edit_plat'";
     $result = $conn->query($update_pet);
     if ($result === TRUE) {
       ?>
       <script>
-        window.location = "tables.php";
+        window.location = "table_lcgc.php";
       </script>
       <?php
     }
@@ -22,8 +22,8 @@ if (isset($_POST['addpet'])) {
   }
 
   if ($plat_nomor != NULL && $pet_name != NULL && $pet_desc != NULL && $pet_price != NULL) {
-    $target_dir = "uploads/";
-    $additional_target_dir = "../Index_Online/admin/uploads/";
+    $target_dir = "uploads/mobil/LCGC";
+    $additional_target_dir = "../Index_Online/admin/uploads/mobil/LCGC";
     $date = date_create();
     $target_file = $target_dir . date_timestamp_get($date) . '_' . basename($_FILES["pet_image"]["name"]);
     $additional_target_file = $additional_target_dir . date_timestamp_get($date) . '_' . basename($_FILES["pet_image"]["name"]);
@@ -64,12 +64,12 @@ if (isset($_POST['addpet'])) {
           echo "Gagal menyalin file ke direktori tambahan.";
         }
 
-        $insert_pet = "INSERT INTO products (plat_nomor, product_name, product_details, product_price, image) 
-                       VALUES ('$plat_nomor', '$pet_name', '$pet_desc', '$pet_price', '$target_file')";
+        $insert_pet = "INSERT INTO products (plat_nomor, type, product_name, product_details, product_price, image) 
+                       VALUES ('$plat_nomor', 0, '$pet_name', '$pet_desc', '$pet_price', '$target_file')";
         if ($conn->query($insert_pet) === TRUE) {
           ?>
           <script>
-            window.location = 'add_pet.php'; 
+            window.location = 'add_lcgc.php'; 
           </script>
           <?php
         } else {
@@ -114,7 +114,7 @@ if (isset($_REQUEST['deleteid']) && $_REQUEST['deleteid'] != NULL) {
     unlink($pet_image);
     ?>
     <script>
-      window.location = 'tables.php';
+      window.location = 'table_lcgc.php';
     </script>
     <?php
   }

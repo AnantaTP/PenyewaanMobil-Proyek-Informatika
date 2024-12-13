@@ -6,7 +6,7 @@ if (!isset($_SESSION['status_simulasi'])) {
     $_SESSION['status_simulasi'] = [];
 }
 
-// Mengambil data dari tabel products dengan filter type = 0 (MPV)
+// Mengambil data dari tabel products dengan filter type = 1 (MPV)
 $fetch_data = "SELECT plat_nomor, product_name, image, product_details, product_price FROM products WHERE type = 1";
 $result = $conn->query($fetch_data);
 
@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['plat_nomor'], $_POST[
 
 <div class="container-fluid">
   <h1 class="h3 mb-2 text-gray-800" style='display: inline-block;'>Tables</h1>
-  <a href='add_pet.php' class='btn btn-success' style="float: right;">Tambah <span class='fa fa-plus'></span></a>
+  <a href='add_mpv.php' class='btn btn-success' style="float: right;">Tambah <span class='fa fa-plus'></span></a>
 
   <div class="card shadow mb-4">
     <div class="card-header py-3">
@@ -65,8 +65,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['plat_nomor'], $_POST[
                       </select>
                     </form>
                   </td>
-                  <td><a class='btn btn-success' href="add_pet.php?editid=<?php echo $row['plat_nomor']; ?>"><span class="fa fa-pen"></span></a></td>
-                  <td><a class='btn btn-danger' href="add_pet.php?deleteid=<?php echo $row['plat_nomor']; ?>"><span class="fa fa-trash"></span></a></td>
+                  <td><a class='btn btn-success' href="add_mpv.php?editid=<?php echo $row['plat_nomor']; ?>"><span class="fa fa-pen"></span></a></td>
+                  <td><a class='btn btn-danger' href="add_mpv.php?deleteid=<?php echo $row['plat_nomor']; ?>"><span class="fa fa-trash"></span></a></td>
                 </tr>
                 <?php
               }
