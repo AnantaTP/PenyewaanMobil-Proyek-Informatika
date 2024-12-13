@@ -17,18 +17,18 @@ $result = $conn->query($fetch_product);
 ?>
 
 <script>
-function addtocart(pid) {
-    $.post("addtocart.php", {
-        pid: pid,
-        addtocart: 1
-    }, function(data, status) {
-        if (data == 0) {
-            window.location = "login.php";
-        } else {
-            alert(data);
-        }
-    });
-}
+    function addtocart(pid) {
+        $.post("addtocart.php", {
+            pid: pid,
+            addtocart: 1
+        }, function (data, status) {
+            if (data == 0) {
+                window.location = "login.php";
+            } else {
+                alert(data);
+            }
+        });
+    }
 </script>
 
 <div class="breacrumb-section">
@@ -67,56 +67,56 @@ function addtocart(pid) {
                             // Kondisi warna dan tombol keranjang berdasarkan status
                             $is_available = ($current_status === 'Available');
                             $gray_class = $is_available ? '' : 'gray-out';
-                            $button_html = $is_available ? 
-                                "<button onclick=\"addtocart('$plat_nomor');\"><i class=\"icon_bag_alt\"></i></button>" : 
-                                "";
+                            $button_html = $is_available ?
+                                "<button onclick=\"addtocart('$plat_nomor');\"><i class=\"icon_bag_alt\"></i></button>" :
+                                "<button disabled><i class=\"icon_bag_alt\"></i></button>"; // Disable button if not available
                             ?>
-                        <div class="col-lg-4 col-sm-6 <?php echo $gray_class; ?>">
-                            <div class="product-item">
-                                <div class="pi-pic">
-                                    <img src="<?php echo htmlspecialchars('admin/' . $row['image']) ?>" alt="">
-                                    <div class="icon"></div>
-                                    <ul>
-                                        <li class="w-icon active">
-                                            <?php echo $button_html; ?>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="pi-text">
-                                    <a href="#" class="plat-nomor">
-                                        <?php echo $row['plat_nomor']; ?>
-                                    </a>
-                                </div>
-                                <div class="pi-text">
-                                    <div class="catagory-name"><?php echo ($category == 0 ? 'LCGC' : 'MPV'); ?></div>
-                                    <a href="#">
-                                        <h5><?php echo $row['product_name']; ?></h5>
-                                    </a>
-                                    <div class="product-price">Rp <?php echo $row['product_price']; ?>/hari</div>
+                            <div class="col-lg-4 col-sm-6 <?php echo $gray_class; ?>">
+                                <div class="product-item">
+                                    <div class="pi-pic">
+                                        <img src="<?php echo htmlspecialchars('admin/' . $row['image']) ?>" alt="">
+                                        <div class="icon"></div>
+                                        <ul>
+                                            <li class="w-icon active">
+                                                <?php echo $button_html; ?>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="pi-text">
+                                        <a href="#" class="plat-nomor">
+                                            <?php echo $row['plat_nomor']; ?>
+                                        </a>
+                                    </div>
+                                    <div class="pi-text">
+                                        <div class="catagory-name"><?php echo ($category == 0 ? 'LCGC' : 'MPV'); ?></div>
+                                        <a href="#">
+                                            <h5><?php echo $row['product_name']; ?></h5>
+                                        </a>
+                                        <div class="product-price">Rp <?php echo $row['product_price']; ?>/hari</div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Modal Deskripsi -->
-                        <div class="modal fade bd-example-modal-lg-<?php echo $row['plat_nomor']; ?>" tabindex="-1"
-                            role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">
-                                            Deskripsi Mobil - <?php echo $row['plat_nomor']; ?>
-                                        </h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p><?php echo $row['product_details']; ?></p>
+                            <!-- Modal Deskripsi -->
+                            <div class="modal fade bd-example-modal-lg-<?php echo $row['plat_nomor']; ?>" tabindex="-1"
+                                role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">
+                                                Deskripsi Mobil - <?php echo $row['plat_nomor']; ?>
+                                            </h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p><?php echo $row['product_details']; ?></p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <?php
+                            <?php
                         }
                         ?>
                     </div>
@@ -127,14 +127,21 @@ function addtocart(pid) {
 </section>
 
 <style>
-/* Tambahkan style untuk kendaraan yang tidak tersedia */
-.gray-out {
-    filter: grayscale(100%);
-    pointer-events: none; /* Nonaktifkan interaksi dengan elemen */
-}
-.gray-out .product-item {
-    opacity: 0.5;
-}
+    /* Tambahkan style untuk kendaraan yang tidak tersedia */
+    .gray-out {
+        filter: grayscale(100%);
+        pointer-events: none;
+        /* Nonaktifkan interaksi dengan elemen */
+    }
+
+    .gray-out .product-item {
+        opacity: 0.5;
+    }
+
+    .gray-out button {
+        pointer-events: none;
+        /* Disable button klik pada mobil yang tidak tersedia */
+    }
 </style>
 
 <?php
