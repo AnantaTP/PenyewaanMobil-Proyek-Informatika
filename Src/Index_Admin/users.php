@@ -22,10 +22,9 @@ $result = $conn->query($fetch_data);
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
-                      <th>Nama</th>
-                      <th>Gambar</th>
+                      <th>Username</th>
                       <th>Email</th>
-                      <th>Nomor</th>
+                      <th>Nomor Telfon</th>
                       <th>Alamat</th>
                       <!-- <th>Edit</th> -->
                       <th>hapus</th>
@@ -38,7 +37,6 @@ $result = $conn->query($fetch_data);
                       ?>
                       <tr>
                       <td><?php echo $row['first_name'].' '.$row['last_name'] ?></td>
-                      <td><img src="../<?php echo $row['image'] ?>" style="width:100px; height:100px;" class="img-circle"></td>
                       <td><?php echo $row['email'] ?></td>
                       <td><?php echo $row['contact_no'] ?></td>
                       <td><?php echo $row['address'] ?></td>

@@ -23,8 +23,11 @@ if (isset($_POST['addpet'])) {
 
   if ($plat_nomor != NULL && $pet_name != NULL && $pet_desc != NULL && $pet_price != NULL) {
     $target_dir = "uploads/";
+    $additional_target_dir = "../Index_Online/admin/uploads/";
     $date = date_create();
     $target_file = $target_dir . date_timestamp_get($date) . '_' . basename($_FILES["pet_image"]["name"]);
+    $additional_target_file = $additional_target_dir . date_timestamp_get($date) . '_' . basename($_FILES["pet_image"]["name"]);
+
     $uploadOk = 1;
     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
@@ -50,8 +53,19 @@ if (isset($_POST['addpet'])) {
       echo "Sorry, your file was not uploaded.";
     } else {
       if (move_uploaded_file($_FILES["pet_image"]["tmp_name"], $target_file)) {
+        // Tambahkan logika untuk menyalin file ke direktori tambahan
+        if (!is_dir($additional_target_dir)) {
+          mkdir($additional_target_dir, 0777, true); // Buat direktori jika belum ada
+        }
+
+        if (copy($target_file, $additional_target_file)) {
+          // File berhasil disalin ke direktori tambahan
+        } else {
+          echo "Gagal menyalin file ke direktori tambahan.";
+        }
+
         $insert_pet = "INSERT INTO products (plat_nomor, product_name, product_details, product_price, image) 
-                               VALUES ('$plat_nomor', '$pet_name', '$pet_desc', '$pet_price', '$target_file')";
+                       VALUES ('$plat_nomor', '$pet_name', '$pet_desc', '$pet_price', '$target_file')";
         if ($conn->query($insert_pet) === TRUE) {
           ?>
           <script>
