@@ -22,8 +22,8 @@ if (isset($_POST['addpet'])) {
   }
 
   if ($plat_nomor != NULL && $pet_name != NULL && $pet_desc != NULL && $pet_price != NULL) {
-    $target_dir = "uploads/mobil/LCGC";
-    $additional_target_dir = "../Index_Online/admin/uploads/mobil/LCGC";
+    $target_dir = "uploads/mobil/LCGC/";
+    $additional_target_dir = "../Index_Online/admin/uploads/mobil/LCGC/";
     $date = date_create();
     $target_file = $target_dir . date_timestamp_get($date) . '_' . basename($_FILES["pet_image"]["name"]);
     $additional_target_file = $additional_target_dir . date_timestamp_get($date) . '_' . basename($_FILES["pet_image"]["name"]);

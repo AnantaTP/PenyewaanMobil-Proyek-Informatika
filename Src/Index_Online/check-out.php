@@ -29,35 +29,48 @@ if (isset($_POST['placeorder'])) {
         $datetime = date("Y-m-d");
 
         // Upload foto KTP
-        $target_dir = 'admin/uploads/Foto KTP'; // Direktori untuk menyimpan foto
-        $foto_ktp = $target_dir . basename($_FILES['foto_ktp']['name']);
-        if (move_uploaded_file($_FILES['foto_ktp']['tmp_name'], $foto_ktp)) {
-            // Menghitung total bayar berdasarkan lama sewa
-            $total_belanja = $total * $lama_sewa;
+        $target_dir1 = 'admin/uploads/Foto KTP/'; // Direktori pertama
+        $target_dir2 = '../Index_Admin/uploads/Foto KTP/'; // Direktori kedua
+        $filename = basename($_FILES['foto_ktp']['name']);
+        $foto_ktp1 = $target_dir1 . $filename;
+        $foto_ktp2 = $target_dir2 . $filename;
 
-            // Update atau masukkan data ke tabel orders
-            $place_order_query = "UPDATE orders SET 
-                address = '$full_address', 
-                status = 0, 
-                date = '$datetime', 
-                lama_sewa = '$lama_sewa', 
-                tanggal_kembali = '$tanggal_kembali', 
-                total_bayar = '$total_belanja', 
-                foto_ktp = '$foto_ktp' 
-                WHERE user_id = '$uid' AND status IS NULL";
+        if (move_uploaded_file($_FILES['foto_ktp']['tmp_name'], $foto_ktp1)) {
+            // Salin file ke direktori kedua
+            if (copy($foto_ktp1, $foto_ktp2)) {
+                // Menghitung total bayar berdasarkan lama sewa
+                $total_belanja = $total * $lama_sewa;
 
-            $result = $conn->query($place_order_query);
-            if ($result === TRUE) {
-                ?>
-                <script>
-                    alert("Thank You For Shopping !");
-                    window.location = "orders.php";
-                </script>
-                <?php
+                // Update atau masukkan data ke tabel orders
+                $place_order_query = "UPDATE orders SET 
+                    address = '$full_address', 
+                    status = 0, 
+                    date = '$datetime', 
+                    lama_sewa = '$lama_sewa', 
+                    tanggal_kembali = '$tanggal_kembali', 
+                    total_bayar = '$total_belanja', 
+                    foto_ktp = '$foto_ktp1' 
+                    WHERE user_id = '$uid' AND status IS NULL";
+
+                $result = $conn->query($place_order_query);
+                if ($result === TRUE) {
+                    ?>
+                    <script>
+                        alert("Thank You For Shopping !");
+                        window.location = "orders.php";
+                    </script>
+                    <?php
+                } else {
+                    ?>
+                    <script>
+                        alert("Some error occurred while saving your order!");
+                    </script>
+                    <?php
+                }
             } else {
                 ?>
                 <script>
-                    alert("Some error occurred !");
+                    alert("Failed to copy the KTP photo to the second directory!");
                 </script>
                 <?php
             }

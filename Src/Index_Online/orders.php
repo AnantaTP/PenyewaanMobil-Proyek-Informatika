@@ -98,24 +98,31 @@ while ($row = $total_amount->fetch_assoc()) {
                                     <td class="p-price first-row">
                                         <?php
                                         $status = $row['status'];
-                                        if ($status == NULL) {
-                                            echo "In the cart";
-                                        } elseif ($status == 0) {
-                                            echo "Sudah Bayar";
-                                        } elseif ($status == 1) {
-                                            echo "Mobil Diambil";
-                                        } elseif ($status == 2) {
-                                            echo "Mobil Dikembalikan";
-                                        } elseif ($status == 3) {
-                                            echo "Dibatalkan";
-                                        } elseif ($status == 4) {
-                                            echo "Selesai";
+                                        switch ($status) {
+                                            case 0:
+                                                echo "Belum Bayar";
+                                                break;
+                                            case 1:
+                                                echo "Sudah Bayar";
+                                                break;
+                                            case 2:
+                                                echo "Mobil Diambil";
+                                                break;
+                                            case 3:
+                                                echo "Mobil Dikembalikan";
+                                                break;
+                                            case 4:
+                                                echo "Dibatalkan";
+                                                break;
+                                            case 5:
+                                                echo "Selesai";
+                                                break;
                                         }
                                         ?>
                                     </td>
                                     <td>
                                         <?php
-                                        if ($status == 4) {
+                                        if ($status == 5) {
                                             ?>
                                             <!-- Button to open the rating modal -->
                                             <button class="btn btn-warning text-white rating-btn"

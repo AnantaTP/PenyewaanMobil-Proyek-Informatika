@@ -6,7 +6,7 @@ if (isset($_SESSION['uid'])) {
 
 $fetch_orders = "SELECT p.plat_nomor, p.product_name, p.product_details, p.product_price, p.image, 
                          o.id AS orderid, o.plat_nomor AS order_plat_nomor, o.user_id, o.address, 
-                         o.date, o.tanggal_kembali, o.lama_sewa, o.total_bayar, o.status, 
+                         o.date, o.tanggal_kembali, o.lama_sewa, o.total_bayar, o.foto_ktp, o.status, 
                          concat(ifnull(ud.first_name, ''),' ',ifnull(ud.last_name, '')) AS user_name 
                   FROM products p 
                   INNER JOIN orders o ON o.plat_nomor = p.plat_nomor 
@@ -17,31 +17,31 @@ $orders = $conn->query($fetch_orders);
 
 // Update status based on admin selection
 if (isset($_POST['statusvalue']) && isset($_POST['orderid'])) {
-    $statusvalue = $_POST['statusvalue'];
-    $orderid = $_POST['orderid'];
-    $updatestatus = "UPDATE orders SET status = '$statusvalue' WHERE id = '$orderid'";
-    $result = $conn->query($updatestatus);
-    if ($result === TRUE) {
-        echo 1;
-    } else {
-        echo 0;
-    }
-    exit;
+  $statusvalue = $_POST['statusvalue'];
+  $orderid = $_POST['orderid'];
+  $updatestatus = "UPDATE orders SET status = '$statusvalue' WHERE id = '$orderid'";
+  $result = $conn->query($updatestatus);
+  if ($result === TRUE) {
+    echo 1;
+  } else {
+    echo 0;
+  }
+  exit;
 }
 
 if (isset($_REQUEST['orderdelete'])) {
-    $orderid = $_REQUEST['orderdelete'];
-    $deleteorder = "DELETE FROM orders WHERE id = '$orderid'";
-    $result = $conn->query($deleteorder);
-    if ($result === TRUE) {
-        ?>
-        <script>
-          window.location = "orders.php";
-        </script>
-        <?php
-    } else {
-        echo "Something went wrong!";
-    }
+  $orderid = $_REQUEST['orderdelete'];
+  $deleteorder = "DELETE FROM orders WHERE id = '$orderid'";
+  $result = $conn->query($deleteorder);
+  if ($result === TRUE) {
+    ?>
+    <script>
+      window.location = "orders.php";
+    </script>
+    <?php
+  } else {
+    echo "Something went wrong!";
+  }
 }
 ?>
 
@@ -74,13 +74,13 @@ if (isset($_REQUEST['orderdelete'])) {
           <thead>
             <tr>
               <th>Id Sewa</th>
-              <th>Nama</th>
-              <th>Gambar</th>
-              <th>Lama Sewa</th>
-              <th>Harga</th>
               <th>Nama Customer</th>
+              <th>Mobil yang Disewa</th>
+              <th>Plat Nomor</th>
               <th>Alamat</th>
-              <th>Plat Nomor</th> <!-- New column for Plat Nomor -->
+              <th>Lama Sewa</th>
+              <th>Total Bayar</th>
+              <th>Foto KTP</th>
               <th>Status</th>
               <th>Hapus</th>
             </tr>
@@ -88,51 +88,51 @@ if (isset($_REQUEST['orderdelete'])) {
           <tbody>
             <?php
             if ($orders->num_rows > 0) {
-              // output data of each row
               while ($row = $orders->fetch_assoc()) {
                 ?>
                 <tr>
                   <td><?php echo $row['orderid'] ?></td>
-                  <td><?php echo $row['product_name'] ?></td>
-                  <td><img src="<?php echo $row['image'] ?>" style="width:100px; height:100px;" class="img-circle"></td>
-                  <td><?php echo $row['lama_sewa'] ?> hari</td>
-                  <td><?php echo $row['total_bayar'] ?></td>
                   <td><?php echo $row['user_name'] ?></td>
+                  <td><?php echo $row['product_name'] ?></td>
+                  <td><?php echo $row['plat_nomor'] ?></td>
                   <td><?php echo $row['address'] ?></td>
-                  <td><?php echo $row['plat_nomor'] ?></td> <!-- Display Plat Nomor from Orders -->
+                  <td><?php echo $row['lama_sewa'] ?> hari</td>
+                  <td><?php echo number_format($row['total_bayar'], 2) ?></td>
+                  <td><img src="<?php echo $row['foto_ktp'] ?>" style="width:100px; height:100px;" class="img-thumbnail">
+                  </td>
                   <td>
                     <?php
                     $status = $row['status'];
                     switch ($status) {
-                      case NULL:
-                        echo "In Cart";
-                        break;
                       case 0:
-                        echo "Sudah Bayar";
+                        echo "Belum Bayar";
                         break;
                       case 1:
-                        echo "Mobil Diambil";
+                        echo "Sudah Bayar";
                         break;
                       case 2:
-                        echo "Mobil Dikembalikan";
+                        echo "Mobil Diambil";
                         break;
                       case 3:
-                        echo "Dibatalkan";
+                        echo "Mobil Dikembalikan";
                         break;
                       case 4:
+                        echo "Dibatalkan";
+                        break;
+                      case 5:
                         echo "Selesai";
                         break;
                     }
                     ?>
                     <form method="post">
-                      <select name="statusvalue" 
-                              onchange="updatestatus(this, '<?php echo $row['orderid']; ?>')" 
-                              class="form-control">
-                        <option value="0" <?php echo ($status == 0) ? 'selected' : ''; ?>>Sudah Bayar</option>
-                        <option value="1" <?php echo ($status == 1) ? 'selected' : ''; ?>>Mobil Diambil</option>
-                        <option value="2" <?php echo ($status == 2) ? 'selected' : ''; ?>>Mobil Dikembalikan</option>
-                        <option value="3" <?php echo ($status == 3) ? 'selected' : ''; ?>>Dibatalkan</option>
-                        <option value="4" <?php echo ($status == 4) ? 'selected' : ''; ?>>Selesai</option>
+                      <select name="statusvalue" onchange="updatestatus(this, '<?php echo $row['orderid']; ?>')"
+                        class="form-control">
+                        <option value="0" <?php echo ($status == 0) ? 'selected' : ''; ?>>Belum Bayar</option>
+                        <option value="1" <?php echo ($status == 1) ? 'selected' : ''; ?>>Sudah Bayar</option>
+                        <option value="2" <?php echo ($status == 2) ? 'selected' : ''; ?>>Mobil Diambil</option>
+                        <option value="3" <?php echo ($status == 3) ? 'selected' : ''; ?>>Mobil Dikembalikan</option>
+                        <option value="4" <?php echo ($status == 4) ? 'selected' : ''; ?>>Dibatalkan</option>
+                        <option value="5" <?php echo ($status == 5) ? 'selected' : ''; ?>>Selesai</option>
                       </select>
                     </form>
                   </td>
@@ -151,22 +151,22 @@ if (isset($_REQUEST['orderdelete'])) {
   </div>
 </div>
 
-  <!-- Bootstrap core JavaScript-->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap core JavaScript-->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Core plugin JavaScript-->
-  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+<!-- Core plugin JavaScript-->
+<script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
-  <!-- Custom scripts for all pages-->
-  <script src="js/sb-admin-2.min.js"></script>
+<!-- Custom scripts for all pages-->
+<script src="js/sb-admin-2.min.js"></script>
 
-  <!-- Page level plugins -->
-  <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-  <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+<!-- Page level plugins -->
+<script src="vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
-  <!-- Page level custom scripts -->
-  <script src="js/demo/datatables-demo.js"></script>
+<!-- Page level custom scripts -->
+<script src="js/demo/datatables-demo.js"></script>
 
 </body>
 
