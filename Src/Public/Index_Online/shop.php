@@ -74,7 +74,7 @@ $result = $conn->query($fetch_product);
                             <div class="col-lg-4 col-sm-6 <?php echo $gray_class; ?>">
                                 <div class="product-item">
                                     <div class="pi-pic">
-                                        <img src="<?php echo htmlspecialchars('admin/' . $row['image']) ?>" alt="">
+                                        <img src="<?php echo htmlspecialchars( $row['image']) ?>" alt="">
                                         <div class="icon"></div>
                                         <ul>
                                             <li class="w-icon active">
