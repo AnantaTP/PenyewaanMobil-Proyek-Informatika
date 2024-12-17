@@ -30,7 +30,7 @@ if (isset($_POST['placeorder'])) {
 
         // Upload foto KTP
         $target_dir1 = 'admin/uploads/Foto KTP/'; // Direktori pertama
-        $target_dir2 = '../../Admin/Index_Admin/uploads/Foto KTP/'; // Direktori kedua
+        $target_dir2 = '../../Admin/Index_Admin/admin/uploads/Foto KTP/'; // Direktori kedua
         $filename = basename($_FILES['foto_ktp']['name']);
         $foto_ktp1 = $target_dir1 . $filename;
         $foto_ktp2 = $target_dir2 . $filename;
