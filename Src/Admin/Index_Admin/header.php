@@ -145,9 +145,14 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] == NULL) {
           <span></span>MPV</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="pengecekan.php">
+        <a class="nav-link" href="orders.php">
           <i class="fas fa-fw fa-table"></i>
-          <span>Pengecekan</span></a>
+          <span>Pesanan Masuk</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="rating.php">
+          <i class="fas fa-fw fa-table"></i>
+          <span>Rating Pelanggan</span></a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="users.php">
@@ -155,16 +160,10 @@ if (!isset($_SESSION['admin']) || $_SESSION['admin'] == NULL) {
           <span>Pengguna</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="orders.php">
+        <a class="nav-link" href="pengecekan.php">
           <i class="fas fa-fw fa-table"></i>
-          <span>Jumlah pesanan</span></a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="rating.php">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Rating Pelanggan</span></a>
-      </li>
-
+          <span>Pengecekan</span></a>
+      
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
 
