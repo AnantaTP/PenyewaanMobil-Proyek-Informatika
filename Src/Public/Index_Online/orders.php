@@ -17,7 +17,6 @@ $total = 50;
 while ($row = $total_amount->fetch_assoc()) {
     $total = $row['total'];
 }
-
 ?>
 
 <head>
@@ -26,19 +25,6 @@ while ($row = $total_amount->fetch_assoc()) {
 </head>
 
 <script>
-    function removefromcart(oid) {
-        $.post("addtocart.php", {
-            cancelorder: 1,
-            oid: oid
-        }, function (data, status) {
-            if (data == 1) {
-                window.location = "orders.php";
-            } else {
-                alert(data);
-            }
-        });
-    }
-
     function openRatingModal(product_id) {
         $('#ratingOrderId').val(product_id); // set order ID in hidden input
         $('#ratingModal').modal('show'); // show modal
@@ -49,6 +35,11 @@ while ($row = $total_amount->fetch_assoc()) {
         $('.fa-star').each(function (i) {
             $(this).toggleClass('checked', i < star);
         });
+    }
+
+    function openUploadModal(orderId) {
+        $('#uploadOrderId').val(orderId); // Set order ID for uploading
+        $('#uploadModal').modal('show'); // Show upload modal
     }
 </script>
 
@@ -76,12 +67,13 @@ while ($row = $total_amount->fetch_assoc()) {
                     <table>
                         <thead>
                             <tr>
+                                <th>ID Pesanan</th>
                                 <th>Gambar</th>
                                 <th>Nama Produk</th>
                                 <th>Harga</th>
                                 <th>Status</th>
+                                <th>Aksi</th>
                                 <th>Rating</th>
-                                <th><i class="ti-close"></i></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -89,12 +81,12 @@ while ($row = $total_amount->fetch_assoc()) {
                             while ($row = $orders->fetch_assoc()) {
                                 ?>
                                 <tr>
-                                    <td class="cart-pic first-row"><img src="<?php echo 'admin/' . $row['image'] ?>" alt="">
-                                    </td>
+                                    <td class="first-row"><?php echo $row['orderid']; ?></td>
+                                    <td class="cart-pic first-row"><img src="<?php echo $row['image']; ?>" alt=""></td>
                                     <td class="first-row">
-                                        <h5><?php echo $row['product_name'] ?></h5>
+                                        <h5><?php echo $row['product_name']; ?></h5>
                                     </td>
-                                    <td class="p-price first-row"><?php echo $row['total_bayar'] ?></td>
+                                    <td class="p-price first-row"><?php echo $row['total_bayar']; ?></td>
                                     <td class="p-price first-row">
                                         <?php
                                         $status = $row['status'];
@@ -122,6 +114,20 @@ while ($row = $total_amount->fetch_assoc()) {
                                     </td>
                                     <td>
                                         <?php
+                                        if ($status == 0) {
+                                            ?>
+                                            <!-- Button to open the upload modal -->
+                                            <button class="btn btn-success"
+                                                onclick="openUploadModal('<?php echo $row['orderid']; ?>')">Upload
+                                                Bukti</button>
+                                            <?php
+                                        } else {
+                                            echo "-";
+                                        }
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <?php
                                         if ($status == 5) {
                                             ?>
                                             <!-- Button to open the rating modal -->
@@ -133,8 +139,6 @@ while ($row = $total_amount->fetch_assoc()) {
                                         }
                                         ?>
                                     </td>
-                                    <td class="close-td first-row"><i class="ti-close"
-                                            onclick="removefromcart('<?php echo $row['orderid']; ?>');"></i></td>
                                 </tr>
                                 <?php
                             }
@@ -154,6 +158,34 @@ while ($row = $total_amount->fetch_assoc()) {
     </div>
 </section>
 
+<!-- Upload Modal -->
+<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="uploadModalLabel">Upload Bukti Pembayaran</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <form action="uploadBuktiPembayaran.php" method="post" enctype="multipart/form-data">
+                <div class="modal-body text-center">
+                    <input type="hidden" name="order_id" id="uploadOrderId">
+                    <label for="bukti_pembayaran">Pilih Bukti Pembayaran:</label>
+                    <input type="file" name="bukti_pembayaran" id="bukti_pembayaran" class="form-control" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- End of Upload Modal -->
+
 <!-- Rating Modal -->
 <div class="modal fade" id="ratingModal" tabindex="-1" role="dialog" aria-labelledby="ratingModalLabel"
     aria-hidden="true">
@@ -168,11 +200,10 @@ while ($row = $total_amount->fetch_assoc()) {
 
             <form action="controlRating.php" method="post">
                 <div class="modal-body text-center">
-                    <input type="hidden" name="rating_value" id="ratingInput"> <!-- Hidden input to store rating -->
-                    <input type="hidden" name="order_id" id="ratingOrderId"> <!-- Hidden input for order ID -->
+                    <input type="hidden" name="rating_value" id="ratingInput">
+                    <input type="hidden" name="order_id" id="ratingOrderId">
                     <label for="rating">Select Rating:</label>
                     <div>
-                        <!-- Star icons for rating -->
                         <i class="fa fa-star fa-2x" onclick="setRating(1)"></i>
                         <i class="fa fa-star fa-2x" onclick="setRating(2)"></i>
                         <i class="fa fa-star fa-2x" onclick="setRating(3)"></i>
@@ -180,7 +211,6 @@ while ($row = $total_amount->fetch_assoc()) {
                         <i class="fa fa-star fa-2x" onclick="setRating(5)"></i>
                     </div>
                     <div>
-                        <!-- Add a textarea for the review input -->
                         <label for="review">Write Your Review:</label>
                         <textarea name="review" id="review" rows="4" class="form-control"
                             placeholder="Enter your review here..."></textarea>
@@ -196,5 +226,4 @@ while ($row = $total_amount->fetch_assoc()) {
 </div>
 <!-- End of Rating Modal -->
 
-<!-- Shopping Cart Section End -->
-<?php include 'footer.php' ?>
+<?php include 'footer.php'; ?>

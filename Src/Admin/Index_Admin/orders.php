@@ -6,7 +6,7 @@ if (isset($_SESSION['uid'])) {
 
 $fetch_orders = "SELECT p.plat_nomor, p.product_name, p.product_details, p.product_price, p.image, 
                          o.id AS orderid, o.plat_nomor AS order_plat_nomor, o.user_id, o.address, 
-                         o.date, o.tanggal_kembali, o.lama_sewa, o.total_bayar, o.foto_ktp, o.status, 
+                         o.date, o.tanggal_kembali, o.lama_sewa, o.total_bayar, o.foto_ktp, o.bukti_pembayaran, o.status, 
                          concat(ifnull(ud.first_name, ''),' ',ifnull(ud.last_name, '')) AS user_name 
                   FROM products p 
                   INNER JOIN orders o ON o.plat_nomor = p.plat_nomor 
@@ -81,6 +81,7 @@ if (isset($_REQUEST['orderdelete'])) {
               <th>Lama Sewa</th>
               <th>Total Bayar</th>
               <th>Foto KTP</th>
+              <th>Bukti Pembayaran</th> <!-- Tambahkan kolom baru -->
               <th>Status</th>
               <th>Hapus</th>
             </tr>
@@ -98,7 +99,17 @@ if (isset($_REQUEST['orderdelete'])) {
                   <td><?php echo $row['address'] ?></td>
                   <td><?php echo $row['lama_sewa'] ?> hari</td>
                   <td><?php echo number_format($row['total_bayar'], 2) ?></td>
-                  <td><img src="<?php echo $row['foto_ktp']; ?>" style="width:100px; height:100px;" class="img-thumbnail">
+                  <td>
+                    <img src="<?php echo $row['foto_ktp']; ?>" style="width:100px; height:100px;" class="img-thumbnail">
+                  </td>
+                  <td>
+                    <!-- Tampilkan Bukti Pembayaran -->
+                    <?php if (!empty($row['bukti_pembayaran'])) { ?>
+                      <img src="<?php echo $row['bukti_pembayaran']; ?>" style="width:100px; height:100px;"
+                        class="img-thumbnail">
+                    <?php } else { ?>
+                      <span>Belum Upload</span>
+                    <?php } ?>
                   </td>
                   <td>
                     <?php

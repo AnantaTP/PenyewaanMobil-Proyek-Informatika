@@ -140,7 +140,7 @@ if (!isset($_SESSION['uid']) || $_SESSION['uid'] == NULL) {
                                                             ?>
                                                             <tr>
                                                                 <td class="si-pic"><img style="width:75px;height:75px;"
-                                                                        src="<?php echo 'admin/' . $row['image']; ?>" alt=""></td>
+                                                                        src="<?php echo $row['image']; ?>" alt=""></td>
                                                                 <td class="si-text">
                                                                     <div class="product-selected">
                                                                         <p><?php echo $row['product_name']; ?></p>

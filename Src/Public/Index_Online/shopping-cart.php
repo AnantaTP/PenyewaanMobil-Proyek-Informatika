@@ -83,7 +83,7 @@ if ($total == NULL) {
                                 while ($row = $orders->fetch_assoc()) {
                                     ?>
                                     <tr>
-                                        <td class="cart-pic first-row"><img src="<?php echo 'admin/' . $row['image'] ?>" alt="">
+                                        <td class="cart-pic first-row"><img src="<?php echo $row['image'] ?>" alt="">
                                         </td>
                                         <td class="first-row">
                                             <h5><?php echo $row['product_name'] ?></h5>
