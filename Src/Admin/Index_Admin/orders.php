@@ -100,13 +100,13 @@ if (isset($_REQUEST['orderdelete'])) {
                   <td><?php echo $row['lama_sewa'] ?> hari</td>
                   <td><?php echo number_format($row['total_bayar'], 2) ?></td>
                   <td>
-                    <img src="<?php echo $row['foto_ktp']; ?>" style="width:100px; height:100px;" class="img-thumbnail">
+                    <img src="<?php echo $row['foto_ktp']; ?>" style="width:100px; height:100px;" class="img-thumbnail"
+                      onclick="showImageModal('<?php echo $row['foto_ktp']; ?>')">
                   </td>
                   <td>
-                    <!-- Tampilkan Bukti Pembayaran -->
                     <?php if (!empty($row['bukti_pembayaran'])) { ?>
                       <img src="<?php echo $row['bukti_pembayaran']; ?>" style="width:100px; height:100px;"
-                        class="img-thumbnail">
+                        class="img-thumbnail" onclick="showImageModal('<?php echo $row['bukti_pembayaran']; ?>')">
                     <?php } else { ?>
                       <span>Belum Upload</span>
                     <?php } ?>
@@ -161,6 +161,31 @@ if (isset($_REQUEST['orderdelete'])) {
     </div>
   </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageModalLabel">Preview Gambar</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body text-center">
+        <img id="modalImage" src="" alt="Preview" style="max-width:100%; height:auto;">
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showImageModal(imageUrl) {
+    document.getElementById('modalImage').src = imageUrl;
+    $('#imageModal').modal('show');
+  }
+</script>
 
 <!-- Bootstrap core JavaScript-->
 <script src="vendor/jquery/jquery.min.js"></script>
