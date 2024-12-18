@@ -74,9 +74,6 @@ if(isset($_POST['signin'])){
                                 <input type="password" id="pass" name="pass">
                             </div>
                             <div class="group-input gi-check">
-                                <div class="gi-more">
-                                    <a href="#" class="forget-pass">Lupa Password</a>
-                                </div>
                             </div>
                             <button type="submit" class="site-btn login-btn" name="signin">Sign In</button>
                         </form>
